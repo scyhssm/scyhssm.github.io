@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>scyhssm Blog</title>
+    <description>关于大数据、古典音乐、现代音乐、生活旅行 | 宋聪谊，Software Engineer | 这里是 @幻想里的唯物论者 的个人博客，关注大数据行业发展一同分享生活。</description>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Fri, 15 Sep 2017 19:02:48 +0800</pubDate>
+    <lastBuildDate>Fri, 15 Sep 2017 19:02:48 +0800</lastBuildDate>
+    <generator>Jekyll v3.5.2</generator>
+    
+      <item>
+        <title>语言特性小记</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;目前开发社区里的语言种类繁多，除了使用了解特性外，写个笔记不失为好方法。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;以下&quot;&gt;以下&lt;/h2&gt;
+
+&lt;h3 id=&quot;jvm&quot;&gt;JVM&lt;/h3&gt;
+
+&lt;p&gt;1.在函数中的一些基本类型的变量和对象的引用变量在函数的栈内存中分配。&lt;/p&gt;
+
+&lt;p&gt;2.堆内存存放new创建的对象和数组，在栈中放数组首地址变量引向堆内存中的内容。&lt;/p&gt;
+
+&lt;p&gt;3.数组和对象在没有变量指向它时，变成垃圾，不能再被使用，被垃圾回收器释放。&lt;/p&gt;
+
+&lt;p&gt;4.栈用内存时要事先知道空间大小，如果要快速调用，需要编译时事先知道分配空间大小。&lt;/p&gt;
+
+&lt;p&gt;5.堆在程序运行时分配，由于多态不确定对象大小，堆分配方式速度慢灵活性高。&lt;/p&gt;
+
+&lt;p&gt;6.存在栈中的数据可共享，比如用a=3，b=3，则b只是a的引用变量，节省空间。&lt;/p&gt;
+
+&lt;h3 id=&quot;语言分类&quot;&gt;语言分类&lt;/h3&gt;
+
+&lt;p&gt;1.编译型语言，一次性把源代码转换成机器语言，编译-&amp;gt;链接-&amp;gt;可执行文件。解释型语言，解释-&amp;gt;执行-&amp;gt;解释…循环。&lt;/p&gt;
+
+&lt;p&gt;2.动态类型语言指在运行期间做数据类型检查的语言，静态语言数据类型在编译期间检查。&lt;/p&gt;
+
+&lt;p&gt;3.强类型语言，一个变量被定义为某种数据类型，若非强制转换，则永远是这个数据类型。弱类型，数据类型可忽略，变量能被赋予多种类型值。&lt;/p&gt;
+</description>
+        <pubDate>Thu, 14 Sep 2017 20:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2017/09/14/language-feature/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/09/14/language-feature/</guid>
+        
+        <category>笔记</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>From 2017</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;Now open a new life.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;Scyhssm的博客开通啦，为了记录生活和学习。&lt;/p&gt;
+
+&lt;p&gt;坚持理想，保留一颗赤子之心。&lt;/p&gt;
+
+&lt;p&gt;生活中的苦闷要有地方发泄，生活中的快乐也要有地方存放。人在这个世上只能走一遭，享受乐趣，承受痛苦，都是我们感知这个世界的方式。&lt;/p&gt;
+
+&lt;p&gt;忠于技术，乐于探索，寻求个人的价值，便是这个博客存在的意义。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;正文&quot;&gt;正文&lt;/h2&gt;
+
+&lt;p&gt;之前一直想要寻求一种简洁方便的搭博方式，现在很多人推崇GitHub Pages + Jekyll 的方法搭建博客。&lt;/p&gt;
+
+&lt;p&gt;好处很多比如说易于维护，访问量不受限等。原想用阿里云主机+域名把网站挂到服务器上，但我不专攻前端，作罢，找一个好框架和漂亮的模板可能更方便些。&lt;/p&gt;
+
+&lt;p&gt;搜到GitHub Pages + Jekyll 这种搭建博客的方法，如获至宝，后期需要映射域名也挺方便。如果各位也有想法搭建博客或是让博客换个新面孔的，强烈推荐这种方法哦。&lt;/p&gt;
+
+&lt;p&gt;硬伤嘛，国内访GitHub速度偏慢。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;后记&quot;&gt;后记&lt;/h2&gt;
+
+&lt;p&gt;博客非原创，尊重原创。作者博客&lt;a href=&quot;https://huangxuan.me/&quot;&gt;链接&lt;/a&gt;,&lt;a href=&quot;https://github.com/huxpro/huxpro.github.io/&quot;&gt;项目地址&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;觉得这个主题模版不错的，可以关注Hux作者，参考别忘了谢谢作者大大啊。&lt;/p&gt;
+
+&lt;hr /&gt;
+</description>
+        <pubDate>Wed, 13 Sep 2017 20:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2017/09/13/hello-world/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/09/13/hello-world/</guid>
+        
+        <category>生活</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>关于j2ee项目启动问题的解决</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;前几天老师给一个项目，要求我能够让这个项目run起来。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;于是乎按照这个项目的要求改jdk，加maven依赖，下载能够运行项目的tomcat版本，结果运行不起来。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;中文路径&quot;&gt;中文路径&lt;/h2&gt;
+
+&lt;p&gt;关于中文路径这个问题，我的建议是，无论是啥项目，最好都别涉及到中文。内容涉及到中文无所谓，比较悲催的是，作为一名程序员，在重装windows的时候，初始化用户名写了自己的大名，不用缩写，耿直得可怕。这就导致一系列问题，User这个文件夹是以我的大名为文件夹名的，把用户名改了也不顶用。&lt;/p&gt;
+
+&lt;p&gt;eclipse默认maven仓库位置是在User下.m2这个文件夹，本着不要让路径出现中文的原则，我把eclipse默认maven仓库位置修改到D盘下。再在D盘建了一个settings.xml文件，项目报的问题又翻新了。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;新的问题&quot;&gt;新的问题&lt;/h2&gt;
+
+&lt;p&gt;新的问题报得奇怪，org.apache.catalina.LifecycleException 大概是这个问题。Google到的解决方案简直是五花八门，事实证明没有一个适合我的。果然光上网寻求解决方案不结合实际问题的解决问题方式就是在耗时间，送命。&lt;/p&gt;
+
+&lt;p&gt;直觉告诉我，是maven依赖有问题，项目的运行环境和别人一样了，为啥就是跑不起来。于是和叶侃对了下依赖包，果然，我的包是比他少的。还没有百分之一百确定原因是不是这个，先解决这个问题试试。&lt;/p&gt;
+
+&lt;p&gt;要解决这个问题有两个方法，一个方法是拷贝别人现成的可用的jar包到maven repository里，缺啥放啥。刚开始是这么试的，把缺的包拷进来，结果还有问题，说实话，整个人是有点崩溃的，maven仓库都一样，还报这个问题跑不起来确实很打击人。为了解决这个问题，把这个项目删了推倒重来，重新搭环境好几次，结果还是没有改变。&lt;/p&gt;
+
+&lt;p&gt;带着绝望的心情试到一种方法时，项目竟然神奇地跑起来了。相信各位都有这个体验，即被一个陈年老BUG在绝望中被解决的兴奋感冲击。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;解决方法&quot;&gt;解决方法&lt;/h2&gt;
+
+&lt;p&gt;由于settings.xml配置默认到国外镜像站下载maven依赖包，增加了下载风险，有些jar包虽然表面上躺在那里，仿佛已经被下载的样子，但其实这个包可能是有问题的。由于网络的原因，这个包下载相比国内镜像站出错率更高。所以解决方法就是，把maven repository里的依赖包统统删掉，再在settings.xml里添加国内镜像站地址，这样的依赖包更靠谱。推荐阿里云中央仓库，完美替代oschina。&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;mirror&amp;gt;  
+    &amp;lt;id&amp;gt;alimaven&amp;lt;/id&amp;gt;  
+    &amp;lt;name&amp;gt;aliyun maven&amp;lt;/name&amp;gt;  
+    &amp;lt;url&amp;gt;http://maven.aliyun.com/nexus/content/groups/public/&amp;lt;/url&amp;gt;  
+    &amp;lt;mirrorOf&amp;gt;central&amp;lt;/mirrorOf&amp;gt;          
+&amp;lt;/mirror&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;想了想为什么第一种解决方法不成功，因为只把缺少的包拷过来了。部分jar包可能看着是下载下来，其实是不完整的。假如说当时把所有的依赖包都删了，相当于把别人仓库复制过来，估计也可行，但是没想到这一方面，所以花了许久的时间解决maven repository的问题。&lt;/p&gt;
+</description>
+        <pubDate>Mon, 03 Jul 2017 20:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2017/07/03/init-j2ee-project/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/07/03/init-j2ee-project/</guid>
+        
+        <category>j2ee</category>
+        
+        <category>maven</category>
+        
+        <category>阿里云中央仓库</category>
+        
+        
+      </item>
+    
+  </channel>
+</rss>
