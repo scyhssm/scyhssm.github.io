@@ -1,7 +1,7 @@
 # Site settings
 title: scyhssm Blog
 SEOTitle: 宋聪谊的博客 | scyhssm Blog
-header-img: img/Finland-4.jpg
+header-img: img/old-shoe.jpg
 email: 347966819@qq.com
 description: "关于大数据、古典音乐、现代音乐、生活旅行 | 宋聪谊，Software Engineer | 这里是 @幻想里的唯物论者 的个人博客，关注大数据行业发展一同分享生活。"
 keyword: "scyhssm, 宋聪谊, 博客, 个人网站, 互联网"
@@ -67,7 +67,7 @@ ga_domain: huangxuan.me             #分析，如果自己要用链接到自己�
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "想要活得像李白<br>限制人的发展的是心境"
+sidebar-about-description: "追求自我价值的实现<br>限制人的发展的是心境"
 sidebar-avatar: /img/violin-15.jpeg      # use absolute URL, seeing it's used in both `/` and `/about/`，头像记得裁剪
 
 

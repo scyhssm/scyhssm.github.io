@@ -5,14 +5,49 @@
     <description>关于大数据、古典音乐、现代音乐、生活旅行 | 宋聪谊，Software Engineer | 这里是 @幻想里的唯物论者 的个人博客，关注大数据行业发展一同分享生活。</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 15 Sep 2017 19:02:48 +0800</pubDate>
-    <lastBuildDate>Fri, 15 Sep 2017 19:02:48 +0800</lastBuildDate>
+    <pubDate>Sat, 16 Sep 2017 20:03:55 +0800</pubDate>
+    <lastBuildDate>Sat, 16 Sep 2017 20:03:55 +0800</lastBuildDate>
     <generator>Jekyll v3.5.2</generator>
+    
+      <item>
+        <title>明天，研究生生涯起航</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;明天是浙大研究生报道时间，焦虑和期待共存。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;焦虑&quot;&gt;焦虑&lt;/h2&gt;
+
+&lt;p&gt;人会对自己无法掌握的东西心存焦虑，比如说古人迷信，拜武圣、龙王爷，祈祷生活顺风顺水。在我考研初试和复试前，纵使平时再如何坚定无神论，也难免对未卜的前途感到迷惘，上微博转发锦鲤。&lt;/p&gt;
+
+&lt;p&gt;前段时间整个人像是要得忧郁症，所幸自我开导摆脱了那个坏心情。起因是感觉自己的奋斗失去了意义，前所认为的，奋斗过上好的生活，便是作为年轻人的头等大事。回家看到年迈的父母，怕父母变老，怕我自己变老。以前在本科没有想那么多，好像我会一辈子年轻，现在才明白生命是一场轮回，在这个轮回里，我们永远无法回避的两件事便是生和死。每天我们都向老，向死更近一步。&lt;/p&gt;
+
+&lt;p&gt;很多人无法摆脱被创造-&amp;gt;结婚-&amp;gt;创造-&amp;gt;消失这条路，被生活磨平棱角，尤其在生子后，追求从事业转到了家庭。我就担忧起自己来，担忧的不是入土，担忧的是一只雄性动物随着睾酮素分泌的减少，丧失斗志，失去追求。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;期待&quot;&gt;期待&lt;/h2&gt;
+
+&lt;p&gt;在家人和朋友的开导下，我的焦虑减轻了些。我觉得，之所以会出现焦虑的心情，和我这两月暑假比较闲，以及对自身定位出现问题有关。其实这是一个重新思考认识自己的机会。&lt;/p&gt;
+
+&lt;p&gt;我热爱代码，热爱音乐，热爱旅行，热爱摄影，有这么多可以实现个人价值的地方，何必因为看不到的未来而困扰。家庭给我的压力已经很轻了，况且于我而言，生活本应欣欣向荣，困守于看不见的未来，自怨自艾，而忽略当下的风景，生命不应如此。&lt;/p&gt;
+
+&lt;p&gt;所以确立自己的目标，做个年轻人，无论是20岁还是50岁。如我在Tags上写的:Youth is not a period of time,it is a state of mind.&lt;/p&gt;
+
+&lt;hr /&gt;
+</description>
+        <pubDate>Fri, 15 Sep 2017 20:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2017/09/15/start-school/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/09/15/start-school/</guid>
+        
+        <category>生活</category>
+        
+        
+      </item>
     
       <item>
         <title>语言特性小记</title>
         <description>&lt;blockquote&gt;
-  &lt;p&gt;目前开发社区里的语言种类繁多，除了使用了解特性外，写个笔记不失为好方法。&lt;/p&gt;
+  &lt;p&gt;目前开发社区里的语言种类繁多，除了通过使用语言了解特性外，写笔记不失为好方法。&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h2 id=&quot;以下&quot;&gt;以下&lt;/h2&gt;
@@ -38,6 +73,8 @@
 &lt;p&gt;2.动态类型语言指在运行期间做数据类型检查的语言，静态语言数据类型在编译期间检查。&lt;/p&gt;
 
 &lt;p&gt;3.强类型语言，一个变量被定义为某种数据类型，若非强制转换，则永远是这个数据类型。弱类型，数据类型可忽略，变量能被赋予多种类型值。&lt;/p&gt;
+
+&lt;hr /&gt;
 </description>
         <pubDate>Thu, 14 Sep 2017 20:00:00 +0800</pubDate>
         <link>http://localhost:4000/2017/09/14/language-feature/</link>
@@ -49,14 +86,14 @@
       </item>
     
       <item>
-        <title>From 2017</title>
+        <title>起点，2017</title>
         <description>&lt;blockquote&gt;
   &lt;p&gt;Now open a new life.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
 
-&lt;p&gt;Scyhssm的博客开通啦，为了记录生活和学习。&lt;/p&gt;
+&lt;p&gt;scyhssm的博客开通啦，用来记录生活和学习。&lt;/p&gt;
 
 &lt;p&gt;坚持理想，保留一颗赤子之心。&lt;/p&gt;
 
@@ -70,7 +107,7 @@
 
 &lt;p&gt;之前一直想要寻求一种简洁方便的搭博方式，现在很多人推崇GitHub Pages + Jekyll 的方法搭建博客。&lt;/p&gt;
 
-&lt;p&gt;好处很多比如说易于维护，访问量不受限等。原想用阿里云主机+域名把网站挂到服务器上，但我不专攻前端，作罢，找一个好框架和漂亮的模板可能更方便些。&lt;/p&gt;
+&lt;p&gt;好处很多比如说易于维护，访问量不受限等。原想用阿里云主机+域名把html + css网站挂到服务器上，但我不专攻前端，作罢，找一个好框架和漂亮的模板可能更方便些。&lt;/p&gt;
 
 &lt;p&gt;搜到GitHub Pages + Jekyll 这种搭建博客的方法，如获至宝，后期需要映射域名也挺方便。如果各位也有想法搭建博客或是让博客换个新面孔的，强烈推荐这种方法哦。&lt;/p&gt;
 
@@ -96,9 +133,9 @@
       </item>
     
       <item>
-        <title>关于j2ee项目启动问题的解决</title>
+        <title>解决j2ee项目运行时的问题</title>
         <description>&lt;blockquote&gt;
-  &lt;p&gt;前几天老师给一个项目，要求我能够让这个项目run起来。&lt;/p&gt;
+  &lt;p&gt;前几天老师给了一个项目，要求我能够让这个项目run起来。&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;blockquote&gt;
@@ -107,7 +144,7 @@
 
 &lt;h2 id=&quot;中文路径&quot;&gt;中文路径&lt;/h2&gt;
 
-&lt;p&gt;关于中文路径这个问题，我的建议是，无论是啥项目，最好都别涉及到中文。内容涉及到中文无所谓，比较悲催的是，作为一名程序员，在重装windows的时候，初始化用户名写了自己的大名，不用缩写，耿直得可怕。这就导致一系列问题，User这个文件夹是以我的大名为文件夹名的，把用户名改了也不顶用。&lt;/p&gt;
+&lt;p&gt;关于中文路径这个问题，我的建议是，无论是啥项目，最好路径都别涉及到中文，内容涉及到中文无所谓。比较悲催的是，作为一名程序员，在重装windows的时候，初始化用户名写了自己的大名，不用缩写，耿直得可怕。这就导致一系列问题，User这个文件夹是以我的大名为文件夹名的，把用户名改了也不顶用。&lt;/p&gt;
 
 &lt;p&gt;eclipse默认maven仓库位置是在User下.m2这个文件夹，本着不要让路径出现中文的原则，我把eclipse默认maven仓库位置修改到D盘下。再在D盘建了一个settings.xml文件，项目报的问题又翻新了。&lt;/p&gt;
 
@@ -115,11 +152,11 @@
 
 &lt;h2 id=&quot;新的问题&quot;&gt;新的问题&lt;/h2&gt;
 
-&lt;p&gt;新的问题报得奇怪，org.apache.catalina.LifecycleException 大概是这个问题。Google到的解决方案简直是五花八门，事实证明没有一个适合我的。果然光上网寻求解决方案不结合实际问题的解决问题方式就是在耗时间，送命。&lt;/p&gt;
+&lt;p&gt;新的问题报得奇怪，org.apache.catalina.LifecycleException。Google到的解决方案简直是五花八门，事实证明没有一个靠谱的。果然光上网寻求解决方案不结合实际问题的解决方式就是在耗时间，送命。&lt;/p&gt;
 
-&lt;p&gt;直觉告诉我，是maven依赖有问题，项目的运行环境和别人一样了，为啥就是跑不起来。于是和叶侃对了下依赖包，果然，我的包是比他少的。还没有百分之一百确定原因是不是这个，先解决这个问题试试。&lt;/p&gt;
+&lt;p&gt;直觉告诉我，是maven依赖有问题，项目的运行环境和别人一样了，为啥就是跑不起来。于是和叶侃对了下依赖包，果然，我的包是比他少的。先试着解决这个问题。&lt;/p&gt;
 
-&lt;p&gt;要解决这个问题有两个方法，一个方法是拷贝别人现成的可用的jar包到maven repository里，缺啥放啥。刚开始是这么试的，把缺的包拷进来，结果还有问题，说实话，整个人是有点崩溃的，maven仓库都一样，还报这个问题跑不起来确实很打击人。为了解决这个问题，把这个项目删了推倒重来，重新搭环境好几次，结果还是没有改变。&lt;/p&gt;
+&lt;p&gt;要解决这个问题有两个方法，一个方法是拷贝别人现成的可用jar包到maven repository里，缺啥放啥。刚开始是这么试的，把缺的包拷进来，结果还有问题，说实话，整个人是有点崩溃的，maven仓库都一样，还报这个问题跑不起来确实很打击人。为了解决这个问题，把这个项目删了推倒重来，重新搭环境好几次，结果还是没有改变。&lt;/p&gt;
 
 &lt;p&gt;带着绝望的心情试到一种方法时，项目竟然神奇地跑起来了。相信各位都有这个体验，即被一个陈年老BUG在绝望中被解决的兴奋感冲击。&lt;/p&gt;
 
@@ -136,7 +173,9 @@
 &amp;lt;/mirror&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;p&gt;想了想为什么第一种解决方法不成功，因为只把缺少的包拷过来了。部分jar包可能看着是下载下来，其实是不完整的。假如说当时把所有的依赖包都删了，相当于把别人仓库复制过来，估计也可行，但是没想到这一方面，所以花了许久的时间解决maven repository的问题。&lt;/p&gt;
+&lt;p&gt;想了想为什么第一种解决方法不成功，因为只把缺少的包拷过来了。部分jar包可能看着是下载下来，其实是不完整的。假如说当时把所有的依赖包都删了，相当于把别人仓库复制过来，估计也可行，但是没想到这一方面，所以花了很久时间解决maven repository的问题。&lt;/p&gt;
+
+&lt;hr /&gt;
 </description>
         <pubDate>Mon, 03 Jul 2017 20:00:00 +0800</pubDate>
         <link>http://localhost:4000/2017/07/03/init-j2ee-project/</link>

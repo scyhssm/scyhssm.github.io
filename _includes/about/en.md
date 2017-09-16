@@ -2,9 +2,17 @@
 
 > Yet another man.
 
-I'm Congyi Song，it's my blog，[zhihu](https://www.zhihu.com/people/scyhssm/activities)、[Github](http://github.com/scyhssm),traditional ways of social network is more suitable for me.
+I'm Congyi Song,born on 1994.Now i am at the end of youth.
 
-Now i'm studying at School of Software Technology,Zhejiang University.[School of Software Technology,Zhejiang University](http://www.cst.zju.edu.cn/)，learning big data，ready for a post of big data.
+Look forward to passion but life is calm.Only surrounded by friends,and four years of single achievement.
+
+Four years single gives me more opportunities to improve myself.I also regret my college life because of single.
+
+I study at [ZAFU](http://www.zjfc.edu.cn/).My college life must be the best time of life.
+
+Welcome to be my friends.[zhihu](http://www.zjfc.edu.cn/),[GitHub](http://github.com/scyhssm).
+
+Graduates studying at [school of Software technology,Zhejiang University](http://www.cst.zju.edu.cn/).Now I'm learning big data.
 
 <!-- ##### Talks -->
 

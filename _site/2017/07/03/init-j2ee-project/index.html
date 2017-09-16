@@ -10,7 +10,7 @@
     <meta name="keywords"  content="scyhssm, 宋聪谊, 博客, 个人网站, 互联网">
     <meta name="theme-color" content="#000000">
     
-    <title>关于j2ee项目启动问题的解决 - 宋聪谊的博客 | scyhssm Blog</title>
+    <title>解决j2ee项目运行时的问题 - 宋聪谊的博客 | scyhssm Blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -184,10 +184,10 @@
                         <a class="tag" href="/tags/#阿里云中央仓库" title="阿里云中央仓库">阿里云中央仓库</a>
                         
                     </div>
-                    <h1>关于j2ee项目启动问题的解决</h1>
+                    <h1>解决j2ee项目运行时的问题</h1>
                     
                     
-                    <h2 class="subheading">resolved problems of init j2ee projects</h2>
+                    <h2 class="subheading">resolved problems of j2ee projects initialization</h2>
                     
                     <span class="meta">Posted by scyhssm on July 3, 2017</span>
                 </div>
@@ -208,7 +208,7 @@
                 post-container">
 
 				<blockquote>
-  <p>前几天老师给一个项目，要求我能够让这个项目run起来。</p>
+  <p>前几天老师给了一个项目，要求我能够让这个项目run起来。</p>
 </blockquote>
 
 <blockquote>
@@ -217,7 +217,7 @@
 
 <h2 id="中文路径">中文路径</h2>
 
-<p>关于中文路径这个问题，我的建议是，无论是啥项目，最好都别涉及到中文。内容涉及到中文无所谓，比较悲催的是，作为一名程序员，在重装windows的时候，初始化用户名写了自己的大名，不用缩写，耿直得可怕。这就导致一系列问题，User这个文件夹是以我的大名为文件夹名的，把用户名改了也不顶用。</p>
+<p>关于中文路径这个问题，我的建议是，无论是啥项目，最好路径都别涉及到中文，内容涉及到中文无所谓。比较悲催的是，作为一名程序员，在重装windows的时候，初始化用户名写了自己的大名，不用缩写，耿直得可怕。这就导致一系列问题，User这个文件夹是以我的大名为文件夹名的，把用户名改了也不顶用。</p>
 
 <p>eclipse默认maven仓库位置是在User下.m2这个文件夹，本着不要让路径出现中文的原则，我把eclipse默认maven仓库位置修改到D盘下。再在D盘建了一个settings.xml文件，项目报的问题又翻新了。</p>
 
@@ -225,11 +225,11 @@
 
 <h2 id="新的问题">新的问题</h2>
 
-<p>新的问题报得奇怪，org.apache.catalina.LifecycleException 大概是这个问题。Google到的解决方案简直是五花八门，事实证明没有一个适合我的。果然光上网寻求解决方案不结合实际问题的解决问题方式就是在耗时间，送命。</p>
+<p>新的问题报得奇怪，org.apache.catalina.LifecycleException。Google到的解决方案简直是五花八门，事实证明没有一个靠谱的。果然光上网寻求解决方案不结合实际问题的解决方式就是在耗时间，送命。</p>
 
-<p>直觉告诉我，是maven依赖有问题，项目的运行环境和别人一样了，为啥就是跑不起来。于是和叶侃对了下依赖包，果然，我的包是比他少的。还没有百分之一百确定原因是不是这个，先解决这个问题试试。</p>
+<p>直觉告诉我，是maven依赖有问题，项目的运行环境和别人一样了，为啥就是跑不起来。于是和叶侃对了下依赖包，果然，我的包是比他少的。先试着解决这个问题。</p>
 
-<p>要解决这个问题有两个方法，一个方法是拷贝别人现成的可用的jar包到maven repository里，缺啥放啥。刚开始是这么试的，把缺的包拷进来，结果还有问题，说实话，整个人是有点崩溃的，maven仓库都一样，还报这个问题跑不起来确实很打击人。为了解决这个问题，把这个项目删了推倒重来，重新搭环境好几次，结果还是没有改变。</p>
+<p>要解决这个问题有两个方法，一个方法是拷贝别人现成的可用jar包到maven repository里，缺啥放啥。刚开始是这么试的，把缺的包拷进来，结果还有问题，说实话，整个人是有点崩溃的，maven仓库都一样，还报这个问题跑不起来确实很打击人。为了解决这个问题，把这个项目删了推倒重来，重新搭环境好几次，结果还是没有改变。</p>
 
 <p>带着绝望的心情试到一种方法时，项目竟然神奇地跑起来了。相信各位都有这个体验，即被一个陈年老BUG在绝望中被解决的兴奋感冲击。</p>
 
@@ -246,7 +246,9 @@
 &lt;/mirror&gt;
 </code></pre>
 </div>
-<p>想了想为什么第一种解决方法不成功，因为只把缺少的包拷过来了。部分jar包可能看着是下载下来，其实是不完整的。假如说当时把所有的依赖包都删了，相当于把别人仓库复制过来，估计也可行，但是没想到这一方面，所以花了许久的时间解决maven repository的问题。</p>
+<p>想了想为什么第一种解决方法不成功，因为只把缺少的包拷过来了。部分jar包可能看着是下载下来，其实是不完整的。假如说当时把所有的依赖包都删了，相当于把别人仓库复制过来，估计也可行，但是没想到这一方面，所以花了很久时间解决maven repository的问题。</p>
+
+<hr />
 
 
                 <hr style="visibility: hidden;">
@@ -255,9 +257,9 @@
                     
                     
                     <li class="next">
-                        <a href="/2017/09/13/hello-world/" data-toggle="tooltip" data-placement="top" title="From 2017">
+                        <a href="/2017/09/13/hello-world/" data-toggle="tooltip" data-placement="top" title="起点，2017">
                         Next<br>
-                        <span>From 2017</span>
+                        <span>起点，2017</span>
                         </a>
                     </li>
                     
@@ -311,6 +313,10 @@
         				
                             
         				
+                            
+                				<a href="/tags/#生活" title="生活" rel="2">
+                                    生活
+                                </a>
                             
         				
                             

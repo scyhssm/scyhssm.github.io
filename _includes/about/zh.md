@@ -1,4 +1,4 @@
-> 想要活得像李白  
+> 追求自我价值的实现  
 > 限制人的发展的是心境
 
 <!-- Hey，我是黄玄，病毒种，进化程度不明，多出没于[博客](https://huangxuan.me)、[微博](weibo.com/huxpro)、[知乎](https://www.zhihu.com/people/huxpro/pins/posts)、[Twitter](https://twitter.com/Huxpro/)、[Github](http://github.com/huxpro)、[Medium](https://medium.com/@Huxpro) 等地带，绝招尚在开发中。
@@ -6,9 +6,18 @@
 职业是软件工程师，[Web 工会](https://medium.com/ben-and-dion/team-web-3315aa447fb2#.359a9c6cl)活跃成员。曾被招募为淘宝网 · [阿里旅行](http://alitrip.com)前端工程师、微影时代 · [微票儿](http://www.wepiao.com/?r=movie)前端基础工程团队负责人、[饿了么](https://ele.me/) · 大前端团队 · [PWA 顾问](https://medium.com/elemefe/upgrading-ele-me-to-progressive-web-app-2a446832e509)。
 
 一些作品和开源软件项目，👉 戳 [Portfolio](/portfolio)、[Github](http://github.com/huxpro)、[演说.io](http://https://zhuanlan.zhihu.com/p/21280918)。  -->
-我是宋聪谊，博客先写着玩，可以逛[知乎](https://www.zhihu.com/people/scyhssm/activities)、[Github](http://github.com/scyhssm),社交的方式比较传统。
 
-目前就读于[浙江大学软件学院](http://www.cst.zju.edu.cn/)，研究生攻读大数据技术，准备毕业求职大数据开发岗。
+宋聪谊，94年生，目前被青春的尾巴拖着前行。
+
+期待波澜起伏的人生，至今为止，生活一片风平浪静，唯有基友环绕，和本科四年单身成就。
+
+四年单身让我有更多机会提升自己，也让我对大学生活有一丝遗憾。
+
+本科就读于[浙江农林大学](http://www.zjfc.edu.cn/)计算机科学与技术，在母校的时光应该会是我生命中最美好的时光之一。
+
+作为一名普普通通的待入职大数据行业程序员，如果有想要和我交朋友的，欢迎加我关注我[知乎](https://www.zhihu.com/people/scyhssm/activities)、[GitHub](http://github.com/scyhssm)。
+
+研究生就读于[浙江大学软件学院](http://www.cst.zju.edu.cn/)，攻读大数据技术方向，脑袋空空，知识待填充。
 
 <!-- ##### Talks -->
 
