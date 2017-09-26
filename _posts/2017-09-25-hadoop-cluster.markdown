@@ -88,9 +88,9 @@ vi /etc/hosts
 ```
 
 配置完后记得重启服务
-···
+```
 service network restart
-···
+```
 ping回环，ping外网，ping主机，ping本机IP测试网络，ifconfig看看网络配置是否生效。
 
 # 3.安装java
