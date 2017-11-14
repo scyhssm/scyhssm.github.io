@@ -8,6 +8,7 @@ header-img: "img/hadoop.jpg"
 catalog:    true
 tags:
     - hadoop
+    - cluster
 ---
 
 >对于入门者来说，搭建hadoop集群不是一件轻松的事，希望我的文档能有所帮助
