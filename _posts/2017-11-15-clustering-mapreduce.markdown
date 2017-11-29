@@ -336,7 +336,7 @@ public class MyRunner {
         FileInputFormat.setInputPaths(job,"hdfs://hdp-01:9000/sogou_full/sogou.10k.utf8");
         Path path = new Path("hdfs://hdp-01:9000/tmp/");
         FileSystem fileSystem = path.getFileSystem(conf);
-        if(fileSystem.exists(path)){hdfs://hdp-01:9000/test/2.txt"
+        if(fileSystem.exists(path)){
             fileSystem.delete(path,true);
         }
         FileOutputFormat.setOutputPath(job,path);
