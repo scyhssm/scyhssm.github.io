@@ -1,0 +1,48 @@
+---
+layout:    post
+title:      "第四范式实习第二十二天"
+subtitle:   "Day22 Practice"
+date:       2018-06-04 12:00:00
+author:     "scyhssm"
+header-img: "img/实习.jpeg"
+header-mask: 0.3
+catalog:    true
+tags:
+    - 实习
+---
+
+>这是我在范式第二十二天，累
+
+## 知识
+1.列式存储的优点  
+
+(1)跳过不符合条件不需要的列，读取需要的列，降低IO数据量
+
+(2)压缩编码可以降低磁盘存储空间。同一列的数据结构相似，压缩编码的效率会很高。
+
+(3)读取需要的列，获取更好的扫描性能。
+
+2.@JsonIgnore,@JsonView
+
+(1)@JsonIgnore,Json序列化忽略某些字段
+
+(2)@JsonView，过滤序列化对象的字段属性，有选择的序列化对象，这样在序列化加了@JsonView的类只会序列化@JsonView
+
+3.微服务和大型项目的优缺点
+
+## 今日任务
+1.确定接口参数
+
+2.调通PWS接口
+
+3.写读取parquet文件方法
+
+## 问题
+PySpark算子写得有问题，不能得到有效结果
+
+## 明日代办
+1.确定输入table的prn格式是正确的
+
+2.PySpark对清楚
+
+3.开一个线程用来轮询PWS执行PySpark算子状态

@@ -1,0 +1,35 @@
+---
+layout:    post
+title:      "第四范式实习第七天"
+subtitle:   "Day7 Practice"
+date:       2018-05-14 12:00:00
+author:     "scyhssm"
+header-img: "img/实习.jpeg"
+header-mask: 0.3
+catalog:    true
+tags:
+    - 实习
+---
+
+>这是我在范式第七天，累
+
+## 工作内容
+1.参与了学习圈需求确认会议。
+
+2.完成并提交模型摘要参数加载。
+
+3.阅读Prophet 3.0测试指南，Prophet EE架构图。
+
+4.Spring boot学习。
+
+5.操作系统和计网一章。
+
+## 遇到的问题
+在Spring boot上冒进，急于求成，犯了左的错误，贪多而嚼不烂。
+
+## 明日计划
+1.学习Spring boot，不能点到即止，搭一个小项目就满足。
+
+2.参与PMS报警信息接口的对接。
+
+3.操作系统和计网一章。

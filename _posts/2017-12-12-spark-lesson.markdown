@@ -4,7 +4,7 @@ title:      "spark课程学习"
 subtitle:   "Learning spark"
 date:       2017-12-12 12:00:00
 author:     "scyhssm"
-header-img: "img/ssm.jpg"
+header-img: "img/spark-logo-trademark.png"
 header-mask: 0.3
 catalog:    true
 tags:
@@ -65,7 +65,7 @@ val sc = new SparkContext(conf)
 ## 使用RDD编程
 RDD，分布式弹性数据集。工作是创建新的RDD，转换存在的RDD，在RDD上操作计算结果。
 
-RDD会被分成多个部分，每部分分给不同的节点计算。
+RDD会被分成多个partition，每部分分给不同的节点计算。
 
 RDD可以包含java、python和scala对象，还有用户定义的类。
 
@@ -156,7 +156,7 @@ val pairs = lines.map(x=>(x.split(" ")(0),x))
 pairs.filter{case(key,value)=>value.length<20}
 ```
 
-注意花括号的使用。如果要调用的参数有两个或两个以上的参数，只能使用小括号。如果单一参数，小括号和花括号可以互换。
+注意花括号的使用。如果要调用的函数有两个或两个以上的参数，只能使用小括号。如果单一参数，小括号和花括号可以互换。
 
 从实际上说，一般小括号用于单行，花括号用于多行。参数是case实现的偏函数，只能使用花括号，case一般是多行。
 

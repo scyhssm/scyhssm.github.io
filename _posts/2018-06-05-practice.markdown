@@ -1,0 +1,29 @@
+---
+layout:    post
+title:      "第四范式实习第二十三天"
+subtitle:   "Day23 Practice"
+date:       2018-06-05 12:00:00
+author:     "scyhssm"
+header-img: "img/实习.jpeg"
+header-mask: 0.3
+catalog:    true
+tags:
+    - 实习
+---
+
+>这是我在范式第二十三天，累
+
+## 今日任务
+1.优化重构大盘、业务、模型指标代码
+
+2.合并雪军提交的代码
+
+3.git merge --abort
+
+## 问题
+与雪军提交的代码存在大量冲突
+
+## 明日任务
+1.解决合并代码冲突
+
+2.提交修改后的大盘、业务、模型指标代码

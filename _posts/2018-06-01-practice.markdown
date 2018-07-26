@@ -1,0 +1,26 @@
+---
+layout:    post
+title:      "第四范式实习第二十一天"
+subtitle:   "Day21 Practice"
+date:       2018-06-01 12:00:00
+author:     "scyhssm"
+header-img: "img/实习.jpeg"
+header-mask: 0.3
+catalog:    true
+tags:
+    - 实习
+---
+
+>这是我在范式第二十一天，累
+
+## 今日代办
+1.理清周六开发要依赖的接口
+
+2.接口大概会依赖到PDMS，PWS，自学习
+
+3.梳理了整个开发流程
+
+## 明日代办
+1.开发正样本率功能
+
+2.从自学习方案执行的历史数据中找到时间

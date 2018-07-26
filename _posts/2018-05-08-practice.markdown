@@ -1,0 +1,37 @@
+---
+layout:    post
+title:      "第四范式实习第四天"
+subtitle:   "Day4 Practice"
+date:       2018-05-08 12:00:00
+author:     "scyhssm"
+header-img: "img/实习.jpeg"
+header-mask: 0.3
+catalog:    true
+tags:
+    - 实习
+---
+
+>这是我在范式第四天，累
+
+## 工作内容
+1.参与Spark、PICO介绍会议，知道了Spark和PICO在公司中的地位，未来我们要能够围绕Spark和PICO算子实现业务设计配置文件。
+
+2.自学习方案文档，从onSuccess方法切入思考如何修改完成onFailure，TrainCallBackJob.java(onFailure)->ExcutionHistrory->SolutionServiceImpl。
+
+3.浏览Prophet 2.0技术架构图，还有一些不甚理解的模块名。
+
+4.在项目开发中使用Swapper令前后端交互更方便。
+
+## 遇到的问题
+1.对目前的项目使用的技术栈没有清晰的了解，会遇到语言中奇怪的用法。如lombok插件自动实现set和get方法。
+
+2.项目问题还不够明确。
+
+## 明日计划
+1.学习自学习方案代码。
+
+2.完成onFailure()方法。
+
+3.及时做笔记，遇到问题要深入思考，剖析其内部的机理，不能为完成任务而工作。
+
+4.梳理工作，总结完成新的项目合理的方法论。

@@ -1,0 +1,31 @@
+---
+layout:    post
+title:      "第四范式实习第十四天"
+subtitle:   "Day14 Practice"
+date:       2018-05-23 12:00:00
+author:     "scyhssm"
+header-img: "img/实习.jpeg"
+header-mask: 0.3
+catalog:    true
+tags:
+    - 实习
+---
+
+>这是我在范式第十四天，累
+
+## 工作内容
+1.了解基于docker的CICD开发概念，以及k8s和docker间的相互关系
+
+2.学习Spring Boot
+
+3.修改合并过的代码，解决冲突
+
+4.学习Maven命令
+
+## 遇到问题
+既然Spring Boot在启动前也会编译过，为什么还要Maven install和compile呢
+
+## 明天任务
+1.完成正样本率的反馈功能
+
+2.对接auc

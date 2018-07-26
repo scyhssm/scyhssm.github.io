@@ -1,0 +1,39 @@
+---
+layout:    post
+title:      "第四范式实习第六天"
+subtitle:   "Day6 Practice"
+date:       2018-05-10 12:00:00
+author:     "scyhssm"
+header-img: "img/实习.jpeg"
+header-mask: 0.3
+catalog:    true
+tags:
+    - 实习
+---
+
+>这是我在范式第六天，累
+
+## 工作内容
+1.项目中用到大量注解，在网上找了篇博客，博客难免有纰漏的地方。不过大概了解注解用到反射，代理类，隐式接口，handler。
+
+2.写了feedSummaryWithConfigs方法。
+
+3.通过自学习方案文档中solution2.0的设计，大概了解自学习模块的业务。
+
+4.Spring boot中有一个配置文件application-dev.properties，是关于本地启动Spring boot的配置，由于修改这个文件而且这个文件不能push到远程仓库，因此要git stash和pop对内容进行保存。
+
+5.了解了CI/CD持续集成的概念。
+
+## 遇到的问题
+1.了解注解不够深入，没有敲代码实现，知识摄取不全面。需要结合书本内容。
+
+2.完成的方法没有提交，不知道怎么测试。
+
+3.只是了解业务，对代码了解很浅，学习并不快速。
+
+## 明日计划
+1.根据测试那边先知3.0的文档了解先知3.0做的工作，最好有产出，用画一张产品工作的图，可以把这张图给同事看，进行修正。
+
+2.学习Spring boot框架，为了有产出，搭一个Spring boot。
+
+3.看项目的代码，用postman、原始的网页去调试，从Controller类入手，遇到没见过的调用，注解，去网上找找是什么工具，什么插件。

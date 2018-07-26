@@ -1,0 +1,1061 @@
+---
+layout:    post
+title:      "JavaEE8中的新特性"
+subtitle:   "Characteristic Of JavaEE8"
+date:       2018-01-13 12:00:00
+author:     "scyhssm"
+header-img: "img/javaee8.png"
+header-mask: 0.3
+catalog:    true
+tags:
+    - j2EE
+---
+
+> Oracle 对 Java EE 进行了战略性重新定位，重点关注一些支持云计算、微服务和反应式编程的技术。反应式编程现在正融入到许多 Java EE API 的架构中，而 JSON 交换格式为核心平台提供了支撑。
+
+我们将大体了解 Java EE 8 中提供的主要特性。重点包括 API 更新和引入、对 HTTP/2 的新支持、反应式编程，以及 JSON。我们首先会介绍 Java EE 规范和升级，它们无疑将决定企业 Java 编程未来几年的发展方向。
+
+## 全新的API和更新的API
+Java EE 8 向核心 API 引入了一些主要和次要更新，比如 Servlet 4.0 和 Context and Dependency Injection 2.0。还引入了两个新的 API —Java API for JSON Binding (JSR 367) 和 Java EE Security API (JSR 375)。我们首先介绍新的 API，然后探索对存在已久的 Java EE 规范的改动。
+
+## JSON Binding API
+新的 JSON Binding API (JSON-B) 支持在 Java 对象与兼容RFC 7159 的JSON 之间执行序列化和反序列化，同时维护与 JAXB (Java API for XML Binding 2.0) 的一致性。它提供了从 Java 类和实例到符合公认约定的 JSON 文档的默认映射。
+
+JSON-B xu 还允许开发人员自定义序列化和反序列化。您可以使用注释自定义各个类的这些流程，或者使用运行时配置构建器来开发自定义策略。后一种方法包括使用适配器来支持用户定义的自定义。JSON-B 与 Java API for JSON Processing (JSON-P) 1.1（本文后面将讨论）紧密集成。
+
+### 规范内容
+两个接口为新的 JSON Binding API 提供了入口：JsonbBinding 和 Jsonb。
+
+* JsonbBinding 提供了 JSON Binding API 的客户端访问点。为此，它通过根据所设置的配置和参数来构建 Jsonb 实例。
+* Jsonb 通过方法 toJson() 和 fromJson() 提供序列化和反序列化操作。
+
+JSON-B 还可以向插入的外部 JSON Binding 提供者描述功能，所以您不受 API 附带的绑定逻辑的限制。
+
+### 使用 JsonB 实现序列化和反序列化
+首先序列化 Book 类 book 的实例，然后将其反序列化。
+```
+String bookJson = JsonbBuilder.create().toJson(book);
+Book book = JsonbBuilder.create().fromJson(bookJson, Book.class);
+```
+
+静态 create() 工厂方法返回一个 Jsonb 实例。您可以在该实例上调用许多重载的 toJson() 和 fromJson() 方法。另请注意，该规范没有强制要求来回等效转换：在上面的示例中，将 bookJson 字符串传入 fromJson() 方法中可能不会反序列化为一个等效对象。
+
+JSON-B 还支持采用与对象大致相同的方式来绑定集合类与原语和/或实例数组 —包括多维数组。
+
+### 自定义 Jsonb
+可通过为字段、JavaBeans 方法和类添加注释，对 Jsonb 方法的默认行为进行自定义。
+
+例如，可以使用@JsonbNillable 和@JsonbPropertyOrder 注释来自定义 null 处理和属性顺序，该顺序应在类级别上进行自定义：
+```
+@JsonbNillable
+@JsonbPropertyOrder(PropertyOrderStrategy.REVERSE)
+public class Booklet {
+
+   private String title;
+
+   @JsonbProperty("cost")
+   @JsonbNumberFormat("#0.00")
+   private Float price;
+
+   private Author author;
+
+   @JsonbTransient
+   public String getTitle() {
+       return title;
+   }
+
+   @JsonbTransient
+   public void setTitle(String title) {
+       this.title = title;
+   }
+
+   // price and author getters/setter removed for brevity
+ }
+```
+调用方法 toJson() 会生成下面所示的 JSON 结构。
+```
+{
+  "cost": "10.00",
+  "author": {
+    "firstName": "Alex",
+    "lastName": "Theedom"
+  }
+}
+```
+也可以选择通过运行时配置构建器 JsonbConfig 来执行自定义：
+```
+JsonbConfig jsonbConfig = new JsonbConfig()
+    .withPropertyNamingStrategy(
+        PropertyNamingStrategy.LOWER_CASE_WITH_DASHES)
+    .withNullValues(true)
+    .withFormatting(true);
+
+Jsonb jsonb = JsonbBuilder.create(jsonbConfig);
+```
+将 JSON-B 配置为使用 LOWER_CASE_WITH_DASHES 约定，以便将 null 保留在它们所在的位置，并输出经过优化的 JSON。
+
+开源绑定
+```
+JsonbBuilder builder = JsonbBuilder.newBuilder("aProvider");
+```
+
+## Java EE Security API
+新 Java EE Security API 的引入，是为了更正各种 servlet 容器在解决安全问题的方式上的不一致。这个问题在 Java Web 配置文件中尤为突出，主要是因为 Java EE 仅规定了完整的 Java EE 配置文件必须如何实现标准 API。新规范还引入了一些现有 API 没有利用的现代功能，比如 CDI。
+
+这个 API 的美妙之处在于，它提供了一种配置身份存储和身份验证机制的备选方法，但没有取代现有安全机制。开发人员应该非常希望拥有在 Java EE Web 应用程序中启用安全性的机会，无论是否使用特定于供应商的解决方案或专用的解决方案。
+
+### 规范内容
+Java EE Security API 规范解决了 3 个关键问题：
+* HttpAuthenticationMechanism 支持对 servlet 容器执行身份验证。
+* IdentityStore 标准化了 JAAS LoginModule。
+* SecurityContext 提供了一个实现编程安全的访问点。
+
+### HttpAuthenticationMechanism
+Java EE 已指定了两种验证 Web 应用程序用户的机制：Java Servlet 规范 3.1 (JSR-340) 指定了一种声明性的应用程序配置机制，而 JASPIC (Java Authentication Service Provider Interface for Containers) 定义了一个名为 ServerAuthModule 的 SPI，该 SPI 支持开发身份验证模块来处理任何凭证类型。
+
+这两种机制既有意义又很有效，但从 Web 应用程序开发人员的角度讲，每种机制都存在局限性。servlet 容器机制仅支持小范围的凭证类型。JASPIC 非常强大和灵活，但使用起来也非常复杂。
+
+Java EE Security API 希望通过一个新接口解决这些问题：HttpAuthenticationMechanism。这个新接口实际上是 JASPIC ServerAuthModule 接口的一个简化的 servlet 容器变体，它在减少现有机制的局限性的同时利用现有机制。
+
+HttpAuthenticationMechanism 类型的实例是一个 CDI bean，可将它用于实现注入操作的容器，而且该实例被指定仅用于 servlet 容器。该规范明确排除了 EJB 和 JMS 等其他容器。
+
+HttpAuthenticationMechanism 接口定义了 3 个方法：validateRequest()、secureResponse() 和 cleanSubject()。这些方法非常类似于 JASPIC ServerAuth 接口上声明的方法，所以开发人员应该对它们感到熟悉。唯一需要重写的方法是 validateRequest()；其他所有方法都有默认实现。
+### IdentityStore
+身份存储是一个数据库，用于存储用户身份数据，比如用户名、组成员关系，以及用于验证凭证的信息。在新的 Java EE Security API 中，使用了一个名为 IdentityStore 的身份存储抽象来与身份存储进行交互。它的用途是验证用户并检索组成员信息。
+
+正如规范中所写，IdentityStore 的意图是供 HttpAuthenticationMechanism 实现使用，不过这不是必须的。结合使用 IdentityStore 和 HttpAuthenticationMechanism，使得应用程序能以一种便携的、标准的方式控制其身份存储。
+### SecurityContext
+IdentityStore 和 HttpAuthenticationMechanism 相结合，成为了一个强大的新的用户身份验证工具。然而，声明性模型可能无法满足系统级安全需求。SecurityContext 可在这里派上用场：编程安全使得 Web 应用程序能执行所需的测试，从而允许或拒绝访问应用程序资源。
+
+## Servlet 4.0、Bean Validation 2.0、CDI 2.0
+Java EE 8 中主要提供了 3 个企业标准 API：Servlet 4.0 (JSR 369)、Bean Validation 2.0 (JSR 380) 和 Contexts and Dependency Injection for Java 2.0 (JSR 365)。
+### Servlet 4.0
+Java Servlet API 是 Java 企业开发人员最早接触、最熟悉的 API 之一。它于 1999 年在 J2EE 1.2 中首次面世，现在在 Java Server Pages (JSP)、JavaServer Faces (JSF)、JAX-RS 和 MVC (JSR 371) 中发挥着重要作用。
+
+Java EE 8 中对 Servlet 进行了重大修订，主要是为了适应 HTTP/2 的性能增强特性。服务器推送目前是这一领域的首要特性。
+
+服务器推送通过将客户端资源推送到浏览器的缓存中来预先满足对这些资源的需求。客户端发送请求并收到服务器响应时，所需的资源已在缓存中。
+
+#### PushBuilder
+在 Servlet 4.0 中，服务器推送是通过一个 PushBuilder 实例公开的。代码展示了一个从 HttpServletResponse 实例获取的 PushBuilder 实例，该实例被传递到一个请求处理方法。
+```
+@Override
+protected void doGet(HttpServletRequest request,
+        HttpServletResponse response)
+        throws ServletException, IOException {
+
+PushBuilder pushBuilder = request.newPushBuilder();
+pushBuilder.path("images/header.png").push();
+pushBuilder.path("css/menu.css").push();
+pushBuilder.path("js/ajax.js").push();
+
+// Do some processing and return JSP that
+// requires these resources
+}
+```
+header.png 的路径是通过 path() 方法在 PushBuilder 实例上设置的，并通过调用 push() 推送到客户端。该方法返回时，会清除路径和条件标头，以供构建器重用。
+
+#### servlet 映射的运行时发现
+Servlet 4.0 提供了一个新的 API，用它来实现 URL 映射的运行时发现。HttpServletMapping 接口的用途是让确定导致 servlet 激活的映射变得更容易。在该 API 内，会从一个 HttpServletRequest 实例获得 servlet 映射，该实例包含 4 个方法：
+* getMappingMatch() 返回匹配的类型。
+* getPattern() 返回激活 servlet 请求的 URL 模式。
+* getMatchValue() 返回匹配的 String
+* getServletName() 返回通过该请求激活的 servlet 类的完全限定名称。
+```
+HttpServletMapping mapping = request.getHttpServletMapping();
+String mapping = mapping.getMappingMatch().name();
+String value = mapping.getMatchValue();
+String pattern = mapping.getPattern();
+String servletName = mapping.getServletName();
+```
+除了这些更新之外，Servlet 4.0 还包含更细微的管理性更改和对 HTTP Trailer 的支持。新的 GenericFilter 和 HttpFilter 类简化了过滤器的编写，实现了对 Java SE 8 的一般性改进。
+
+## JAX-RS 2.1、JSF 2.3、JSON-P 1.1
+这是相对次要的更新，但对 Java API for RESTful Web Services (JSR 370)、JavaServer Faces 2.3 (JSR 372) 和 Java API for JSON Processing 1.1 (JSR 374) 的更改仍值得注意，尤其应该注意反应式和函数式编程的元素。
+### Java API for RESTful Web Services 2.1
+JAX-RS 2.1 API 版本专注于两个主要特性：一个新的反应式客户端 API，以及对服务器发送的事件的支持。
+#### 反应式客户端 API
+RESTful Web Services 自 1.1 版开始就包含一个客户端 API，提供了一种访问 Web 资源的高级方式。JAX-RS 2.1 向此 API 添加了反应式编程支持。最明显的区别是 Invocation.Builder，它被用于构造客户端实例。如下所示，新的 rx() 方法具有一个返回类型 CompletionStage 和参数化类型 Response：
+```
+CompletionStage<Response> cs1 = ClientBuilder.newClient()
+       .target("http://localhost:8080/jax-rs-2-1/books")
+       .request()
+       .rx()
+       .get();
+```
+CompletionStage 接口是在 Java 8 中引入的，它提供了一些有用的可能性。在下面代码中，对不同端点执行了两次调用并组合了结果：
+```
+CompletionStage<Response> cs1 = // from Listing 14
+CompletionStage<Response> cs2 = ClientBuilder.newClient()
+       .target("http://localhost:8080/jax-rs-2-1/magazines")
+       .request()
+       .rx()
+       .get();
+
+cs1.thenCombine(cs2, (r1, r2) ->
+    r1.readEntity(String.class) + r2.readEntity(String.class))
+        .thenAccept(System.out::println);
+```
+#### 服务器发送的事件
+Server Sent Events API (SSE) 由 W3C 在 HTML 5 中引入，并由 WHATWG 社区维护，该 API 允许客户端订阅服务器生成的事件。在 SSE 架构中，创建了一条从服务器到客户端的单向通道，服务器可通过该通道发送多个事件。该连接长期存在并一直处于打开状态，直到一端关闭它。
+
+JAX-RS API 包含一个用于 SSE 的客户端和服务器 API。来自客户端的入口点是 SseEventSource 接口，可以通过一个配置好的 WebTarget 来修改它，如下所示。在这段代码中，客户端注册了一个使用者。使用者输出到控制台，然后打开连接。onComplete 和 onError 生命周期事件的处理函数也受到支持。
+```
+WebTarget target = ClientBuilder.newClient()
+    .target("http://localhost:8080/jax-rs-2-1/sse/");
+
+try (SseEventSource source = SseEventSource
+    .target(target).build()) {
+      source.register(System.out::println);
+      source.open();
+}
+```
+在另一端，SSE 服务器 API 接受来自客户端的连接，并将事件发送到所有已连接的客户端：
+```
+@POST
+@Path("progress/{report_id}")
+@Produces(MediaType.SERVER_SENT_EVENTS)
+public void eventStream(@PathParam("report_id")String id,
+                        @Context SseEventSink es,
+                        @Context Sse sse) {
+    executorService.execute(() -> {
+    try {
+        eventSink.send(
+            sse.newEventBuilder().name("report-progress")
+                .data(String.class,
+                "Commencing process for report " + id)
+                .build());
+            es.send(sse.newEvent("Progress", "25%"));
+            Thread.sleep(500);
+            es.send(sse.newEvent("Progress", "50%"));
+            Thread.sleep(500);
+            es.send(sse.newEvent("Progress", "75%"));
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+    });
+}
+```
+将 SseEventSink 和 Sse 资源注入到了 resource 方法中。Sse 实例获取一个新的出站事件构建器，并将进度事件发送到客户端。请注意，介质类型为一个单独用于事件流的新 text/event-stream 类型。
+#### 广播服务器发送的事件
+事件可同时广播到多个客户端。此操作是通过在 SseBroadcaster 上注册多个 SseEventSink 实例来实现的：
+```
+@Path("/")
+@Singleton
+public class SseResource {
+
+    @Context
+    private Sse sse;
+
+    private SseBroadcaster broadcaster;
+
+    @PostConstruct
+    public void initialise() {
+       this.broadcaster = sse.newBroadcaster();
+    }
+
+    @GET
+    @Path("subscribe")
+    @Produces(MediaType.SERVER_SENT_EVENTS)
+    public void subscribe(@Context SseEventSink eventSink) {
+       eventSink.send(sse.newEvent("You are subscribed"));
+       broadcaster.register(eventSink);
+    }
+
+    @POST
+    @Path("broadcast")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void broadcast(@FormParam("message") String message) {
+       broadcaster.broadcast(sse.newEvent(message));
+    }
+}
+```
+示例接收 URI /subscribe 上的一个订阅请求。该订阅请求会导致为该订阅者创建一个 SseEventSink 实例，然后使用 SseBroadcaster 向资源注册该实例。从提交到 URL /broadcast 的网页表单中检索广播到所有订阅者的消息，然后通过 broadcast() 方法处理它。
+#### 对 JAX-RS 2.1 的其他更新
+JAX-RS 2.1 还引入了其他一些值得提及的细微更改：
+* Resource 方法现在支持使用 CompletionStage<T> 作为一种返回类型。
+* 添加了对 Java API for JSON Processing (JSON-P) 和 Java API for JSON Binding (JSON-B) 的全面支持。
+* 支持对所有提供者使用 @Priority，包括实体提供者 —MessageBodyReader 和 MessageBodyWriter。
+* 对于所有不支持 Java Concurrency Utilities API 的环境，删除了默认设置。
+
+这是实例程序DemoApplication.java的入口。设置了应用入口的路径，getclasses方法获得了json序列化反序列化Demo类。
+```
+@ApplicationPath("/")
+public class DemoApplication extends Application {
+
+    //支持使用 CompletionStage<T>
+    public Set<Class<?>> getClasses() {
+        Set<Class<?>> set = new HashSet<>();
+        set.add(JsonbSerializationDemo.class);
+        set.add(JsonbDeserializationDemo.class);
+        set.add(JsonbDeserializationGenericDemo.class);
+
+        return set;
+    }
+
+    @Override
+    public Map<String, Object> getProperties() {
+        return new HashMap<String, Object>() {{ put(JsonGenerator.PRETTY_PRINTING, true); }};
+    }
+}
+```
+
+实现json反序列化类
+```
+@Path("/deserialization")
+public class JsonbDeserializationDemo {
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Person doGet() {
+        JsonReader reader = Json.createReader(JsonbDeserializationDemo.class.getResourceAsStream("/jasons.json"));
+        JsonArray jasons = reader.readArray();
+
+        JsonPointer p = Json.createPointer("/1");
+        JsonValue voorhees = p.getValue(jasons);
+
+        Jsonb jsonb = JsonbBuilder.create();
+        Person person = jsonb.fromJson(voorhees.toString(), Person.class);
+
+        return person;
+    }
+
+}
+```
+
+实现json通用反序列化类
+```
+@Path("/generic")
+public class JsonbDeserializationGenericDemo {
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String doGet() {
+        Jsonb jsonb = JsonbBuilder.create();
+        Type type = new ArrayList<Person>() {
+        }.getClass().getGenericSuperclass();
+
+        List<Person> jasons = jsonb.fromJson(JsonbDeserializationGenericDemo.class.getResourceAsStream("/jasons.json"), type);
+        return jasons.get(1).getName();
+    }
+
+}
+```
+
+实现json序列化类
+```
+@Path("/serialization")
+public class JsonbSerializationDemo {
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String doGet() {
+        List<Person> jasons = new ArrayList<>(3);
+
+        List<PhoneNumber> jasonBournePhones = new ArrayList<>(2);
+        jasonBournePhones.add(new PhoneNumber("home", "123 456 789"));
+        jasonBournePhones.add(new PhoneNumber("work", "123 555 555"));
+
+        jasons.add(new Person("Jason Bourne", "Super Agent", jasonBournePhones));
+
+        List<PhoneNumber> jasonVoorheesPhones = new ArrayList<>(1);
+        jasonVoorheesPhones.add(new PhoneNumber("home", "666 666 666"));
+
+        jasons.add(new Person("Jason Voorhees", "Maniac Killer", jasonVoorheesPhones));
+        jasons.add(new Person("Jason", "Argonauts Leader", null));
+
+        JsonbConfig config = new JsonbConfig()
+                .withFormatting(true);
+        Jsonb jsonb = JsonbBuilder.create(config);
+        return jsonb.toJson(jasons);
+    }
+
+}
+```
+
+资源文件中存放的是json的实现
+```
+[
+  {
+    "name": "Jason Bourne",
+    "profession": "Super agent",
+    "phoneNumbers": [
+      {
+        "type": "home",
+        "number": "123-456-789"
+      },
+      {
+        "type": "work",
+        "number": "123-555-555"
+      }
+    ]
+  },
+  {
+    "name": "Jason Voorhees",
+    "profession": "Maniac killer",
+    "phoneNumbers": [
+      {
+        "type": "office",
+        "number": "666-666-666"
+      }
+    ]
+  },
+  {
+    "name": "Jason",
+    "profession": "Lead of Argonauts"
+  }
+]
+```
+
+
+
+#### JavaServer Faces 2.3
+JavaServer Faces (JSF) 2.3 版的目的是包含社区请求的特性，以及更紧密地集成 CDI 和 websocket。该版本考虑了大量问题（最终数量达数百个），尝试纠正了许多细微但较为突出的问题。JSF 是一项成熟的技术，所以现在解决的问题都是以前很难解决的或次要的问题。在这些问题中，JSF 2.3 通过对 Java Date/Time 类型和类级 bean 验证的支持，对 Java SE 8 进行了改进。要获得完整列表，建议下载最终版本规范。
+##### JSF 2.3 中的服务器推送
+JSF 2.3 集成了 Servlet 4.0 中的服务器推送支持。JSF 非常适合在服务器推送实现中识别所需的资源，现在已将它设置为在 RenderResponsePhase 生命周期阶段执行该任务。
+#### JSON Processing 1.1
+JSON-P 获得了一个单点版本，这使它能够跟上最新的 IEFT 标准。这些标准包括 JSON Pointer、JSON Patch 和 JSON Merge Patch。
+
+通过在 javax.json.streams 中引入的新 JsonCollectors 类，查询 JSON 也得到了简化。
+
+JSON-P是一个Java API处理JSON信息。它创建和消费JSON text在流中，允许使用API类为JSON text创建Java对象。
+
+为集合加入各种类文件，用来传送
+```
+@ApplicationPath("/")
+public class DemoApplication extends Application {
+
+    public Set<Class<?>> getClasses() {
+        Set<Class<?>> set = new HashSet<>();
+        set.add(ParserResource.class);
+        set.add(GeneratorResource.class);
+        set.add(ObjectResource.class);
+        set.add(ArrayResource.class);
+        set.add(StructureResource.class);
+
+        return set;
+    }
+
+    @Override
+    public Map<String, Object> getProperties() {
+        return new HashMap<String, Object>() {{ put(JsonGenerator.PRETTY_PRINTING, true); }};
+    }
+}
+```
+
+生成器生成资源
+```
+@Path("/generator")
+public class GeneratorResource {
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public StreamingOutput doGet() {
+        return new StreamingOutput() {
+            public void write(OutputStream os) {
+                writeWikiExample(os);
+            }
+        };
+    }
+
+    // Writes wiki example JSON in a streaming fashion
+    private void writeWikiExample(OutputStream os) {
+        try(JsonGenerator gene = Json.createGenerator(os)) {
+            gene.writeStartObject()
+                .write("firstName", "John")
+                .write("lastName", "Smith")
+                .write("age", 25)
+                .writeStartObject("address")
+                    .write("streetAddress", "21 2nd Street")
+                    .write("city", "New York")
+                    .write("state", "NY")
+                    .write("postalCode", "10021")
+                .writeEnd()
+                .writeStartArray("phoneNumber")
+                    .writeStartObject()
+                        .write("type", "home")
+                        .write("number", "212 555-1234")
+                    .writeEnd()
+                    .writeStartObject()
+                        .write("type", "fax")
+                        .write("number", "646 555-4567")
+                    .writeEnd()
+                .writeEnd()
+            .writeEnd();
+        }
+    }
+
+}
+```
+
+获得和传送数据资源
+```
+@Path("/array")
+public class ArrayResource {
+    private static final JsonBuilderFactory bf = Json.createBuilderFactory(null);
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public JsonArray doGet() {
+        return bf.createArrayBuilder()
+                .add(bf.createObjectBuilder()
+                    .add("type", "home")
+                    .add("number", "212 555-1234"))
+                .add(bf.createObjectBuilder()
+                    .add("type", "fax")
+                    .add("number", "646 555-4567"))
+                .build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void doPost(JsonArray structure) {
+        System.out.println(structure);
+    }
+
+}
+```
+
+分析器，分析资源，获得资源通过分析返回输出
+```
+@Path("/parser")
+public class ParserResource {
+
+    @GET
+    @Produces("text/plain")
+    public StreamingOutput doGet() {
+        return new StreamingOutput() {
+            public void write(OutputStream os) throws IOException {
+                writeTwitterFeed(os);
+            }
+        };
+    }
+
+    /**
+     * Parses JSON from twitter search REST API
+     *
+     * ... { ... "from_user" : "xxx", ..., "text: "yyy", ... } ...
+     *
+     * then writes to HTTP output stream as follows:
+     *
+     * xxx: yyy
+     * --------
+     */
+    private void writeTwitterFeed(OutputStream os) throws IOException {
+        URL url = new URL("http://search.twitter.com/search.json?q=%23java");
+        try(InputStream is = url.openStream();
+            JsonParser parser = Json.createParser(is);
+            PrintWriter ps = new PrintWriter(new OutputStreamWriter(os, "UTF-8"))) {
+
+            while(parser.hasNext()) {
+                Event e = parser.next();
+                if (e == Event.KEY_NAME) {
+                    if (parser.getString().equals("from_user")) {
+                        parser.next();
+                        ps.print(parser.getString());
+                        ps.print(": ");
+                    } else if (parser.getString().equals("text")) {
+                        parser.next();
+                        ps.println(parser.getString());
+                        ps.println("---------");
+                    }
+                }
+            }
+        }
+	}
+}
+```
+
+获得和传送object
+```
+@Path("/object")
+public class ObjectResource {
+    private static final JsonBuilderFactory bf = Json.createBuilderFactory(null);
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public JsonObject doGet() {
+        return bf.createObjectBuilder()
+            .add("firstName", "John")
+            .add("lastName", "Smith")
+            .add("age", 25)
+            .add("address", bf.createObjectBuilder()
+                .add("streetAddress", "21 2nd Street")
+                .add("city", "New York")
+                .add("state", "NY")
+                .add("postalCode", "10021"))
+            .add("phoneNumber", bf.createArrayBuilder()
+                .add(bf.createObjectBuilder()
+                    .add("type", "home")
+                    .add("number", "212 555-1234"))
+                .add(bf.createObjectBuilder()
+                    .add("type", "fax")
+                    .add("number", "646 555-4567")))
+            .build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void doPost(JsonObject structure) {
+        System.out.println(structure);
+    }
+
+}
+```
+
+获得和传送资源结构
+```
+@Path("/structure")
+public class StructureResource {
+    private static final JsonBuilderFactory bf = Json.createBuilderFactory(null);
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public JsonStructure doGet() {
+        return bf.createObjectBuilder()
+            .add("firstName", "John")
+            .add("lastName", "Smith")
+            .add("age", 25)
+            .add("address", bf.createObjectBuilder()
+                .add("streetAddress", "21 2nd Street")
+                .add("city", "New York")
+                .add("state", "NY")
+                .add("postalCode", "10021"))
+            .add("phoneNumber", bf.createArrayBuilder()
+                .add(bf.createObjectBuilder()
+                    .add("type", "home")
+                    .add("number", "212 555-1234"))
+                .add(bf.createObjectBuilder()
+                    .add("type", "fax")
+                    .add("number", "646 555-4567")))
+            .build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void doPost(JsonStructure structure) {
+        System.out.println(structure);
+    }
+
+}
+```
+
+#### JSON-Pointer
+JSON Pointer 定义一个字符串表达式来识别 JSON 文档中的特定值。类似于用于识别 XML 中的片段的 XPointer，JSON Pointer 引用了 JSON 文档中的值。例如，考虑下面的 JSON 文档，topics 数组中的第 2 个元素将通过 JSON 指针表达式 /topics/1 进行引用。
+```
+{
+ "topics": [
+   "Cognitive",
+   "Cloud",
+   "Data",
+   "IoT",
+   "Java" ]
+}
+```
+入口 API 是 JsonPointer 接口。通过调用 Json 类上的静态工厂方法 createPointer()，创建了一个实例。下面代码段创建了一个 JsonPointer，并引用了 topics 数组中的第 2 个元素：
+```
+Json.createPointer("/topics/1").getValue(jsonTopicData);
+```
+JsonPointer API 也可以通过 adding、replacing 和 removing 属性来修改 JSON 文档。下面向 topics 列表添加了值“Big Data”：
+```
+Json.createPointer("/topics/0")
+    .add(jsonTopicData, Json.createValue("Big Data"));
+```
+#### JSON Patch
+JSON Patch 表达了应用于 JSON Pointer 符号中的目标 JSON 文档的一系列操作。它可以执行以下操作：add、copy、move、remove、replace 和 test。
+
+JsonPatchBuilder 接口是进入此 API 的网关，是利用 Json 类上的静态方法 createPatchBuilder() 创建的。JSON Pointer 表达式被传递给某个操作方法并应用于 JSON 文档。下面展示了如何将 topics 数组中的第一个元素替换为值“Spring 5”：
+```
+Json.createPatchBuilder()
+    .replace("/topics/0", "Spring 5")
+    .build()
+    .apply(jsonTopicData);
+```
+多个操作可链接起来并按顺序应用于前一次的修订结果。
+#### JsonCollectors
+由于 Java 8 向 javax.json.streams 包引入 JsonCollectors 类，查询 JSON 变得简单得多。下面展示了如何按字母 c 过滤 topics 数组并将结果收集到一个 JsonArray 中。
+```
+JsonArray topics = jsonObject.getJsonArray("topics")
+    .stream()
+    .filter(jv -> ((JsonString) jv).getString().startsWith("C"))
+    .collect(JsonCollectors.toJsonArray());
+```
+
+## JAVA EE8 Servlet
+Servlet是java语言编写的一种类用来扩展服务器的能力，应用可以获得请求响应模块的方法。尽管servlets可以响应任何类型的请求，它们也会通过服务器扩展应用。
+
+对这样的应用来说，Java servlet技术定义了HTTP 特殊的servlet类。
+
+javax.servlet和javax.servlet.http为写servlets提供接口和类。所有的servlet必须实现servlet接口，定义了生命周期方法。
+
+当实现遗传服务，可以使用或者拓展GeneticServlet类提供的servlet API，HttpServlet类提供方法，如doGet和doPost，处理HTTP特殊服务。
+
+Servlet的生命周期被容器控制，servlet就部署在容器中。当一个请求映射到servlet上时，容器会做一下几个步骤：
+* 如果servlet的实例不存在
+* web容器将会加载servlet类
+* 创建servlet类的实例
+* 通过init方法初始化servlet实例
+* 容器调用service方法，传递request和response方法，service方法在Writing Service Method方法被讨论。
+
+web组件，像大部分对象一样，常常和其他对象一起协同工作完成任务。Web组件也能做一下的内容：
+* 使用私有的帮助对象
+* 分享属于公共域的对象
+* 使用数据库
+* 调用其他的web资源
+
+过滤请求和响应，过滤器可以转换请求和响应的头和内容
+* 询问请求并作出反应
+* 屏蔽请求和响应
+* 修改请求头和数据
+* 修改响应头和数据
+* 和外部源交互
+
+新的servlet4.0支持HTTP/2（超文本传输协议第二版，HTTP2.0）。这是HTTP协议的第二个主要版本，使用于万维网。
+
+HTTP/2是HTTP协议自1999年HTTP 1.1发布后的首个更新，主要基于SPDY协议。它由互联网工程任务组（IETF）的Hypertext Transfer Protocol Bis（httpbis）工作小组进行开发。
+
+HTTP/2标准于2015年5月以RFC 7540正式发表。多数主流浏览器已经在2015年底支持了该协议。
+
+HTTP/2 相比 HTTP/1.1 的修改并不会破坏现有程序的工作，但是新的程序可以借由新特性得到更好的速度。
+
+HTTP/2 保留了 HTTP/1.1 的大部分语义，例如请求方法、状态码乃至URI和绝大多数HTTP头部字段一致。而 HTTP/2 采用了新的方法来编码、传输客户端——服务器间的数据。
+
+网站为了使请求数减少，通常采用对页面上的图片、脚本进行极简化处理。但是，这一举措十分不方便，也不高效，依然需要诸多HTTP链接来加载页面和页面资源。
+
+HTTP/2引入了服务器推送，即服务端向客户端发送比客户端请求更多的数据。这允许服务器直接提供浏览器渲染页面所需资源，而无须浏览器在收到、解析页面后再提起一轮请求，节约了加载时间。
+
+这是注解实现过滤的代码,@WebFilter。注解生成一个filter，括号内的filterName="TestFilter"声明filter的名字是TestFilter，过滤匹配urlPatterns={"/"}.
+
+初始化参数，initParams={@WebInitParam(name="mesg",value="my filter")}
+
+public class TestFilter implements Filter这行说明TestFilter是由Filter继承而来。
+
+初始化init由传入的WebInitParam负责，传入的mesg，可以赋值给mesg。
+
+过滤操作doFilter，进入的有请求，有返回，还有过滤链，可以执行过滤操作，同时为传入的请求设置过滤返回信息。
+
+destory，销毁操锁，但是这里不需要销毁内容，因此函数继承但是实际为空。
+```
+package org.glassfish.servlet.annotation_war;
+
+import java.io.IOException;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.annotation.WebInitParam;
+
+/**
+ * This class illustrates WebFilter annotation.
+ * @author Shing Wai Chan
+ */
+@WebFilter(filterName = "TestFilter", urlPatterns = {"/"},
+           initParams = {@WebInitParam(name = "mesg", value = "my filter")})
+public class TestFilter implements Filter {
+
+    String mesg = null;
+
+    public void init(FilterConfig filterConfig) throws ServletException {
+        mesg = filterConfig.getInitParameter("mesg");
+    }
+
+    public void doFilter(ServletRequest req, ServletResponse res,
+            FilterChain chain) throws IOException, ServletException {
+        req.setAttribute("filterMessage", mesg);
+        chain.doFilter(req, res);
+    }
+
+    public void destroy() {
+    }
+}
+```
+
+注解@WebServlet,扩展HttpServlet，继承重写Get方法。
+```
+package org.glassfish.servlet.absolute_ordering_web_fragments_war;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/")
+public class TestServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest req, HttpServletResponse res)
+            throws IOException, ServletException {
+
+        String message = "filterMessage=" + req.getAttribute("filterMessage");
+        res.getWriter().println(message);
+    }
+}
+```
+
+提供相同的模块，并且给模块的绝对顺序排序，调用按照顺序排。
+```
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.0" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <absolute-ordering>
+        <name>A</name>
+        <others/>
+        <name>B</name>
+    </absolute-ordering>
+</web-app>
+```
+
+动态注册包，web.xml文件
+```
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <listener>
+        <listener-class>org.glassfish.servlet.dynamic_registration_war.TestServletContextListener</listener-class>
+    </listener>
+</web-app>
+```
+glassfish-web.xml文件
+```
+<glassfish-web-app error-url="">
+  <jsp-config>
+    <property name="keepgenerated" value="true">
+      <description>Keep a copy of the generated servlet class' java code.</description>
+    </property>
+  </jsp-config>
+</glassfish-web-app>
+```
+TestFilter实现,实现接口Filter的方法，init初始化，doFilter执行过滤操作。
+```
+public class TestFilter implements Filter {
+
+    private String filterInitParam;
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        filterInitParam = filterConfig.getInitParameter("filterInitName");
+    }   
+
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res,
+            FilterChain chain) throws IOException, ServletException {
+        req.setAttribute("filterInitName", filterInitParam);
+        chain.doFilter(req, res);
+    }
+
+    @Override
+    public void destroy() {
+        // Do nothing
+    }
+}
+```
+
+这是TestServlet实现，继承HttpServlet类，重写了service方法。
+```
+public class TestServlet extends HttpServlet {
+
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse res)
+            throws IOException, ServletException {
+
+        if (!"servletInitValue".equals(getServletConfig().getInitParameter(
+                        "servletInitName"))) {
+            throw new ServletException("Missing servlet init param");
+        }
+
+        if (!"filterInitValue".equals(req.getAttribute("filterInitName"))) {
+            throw new ServletException("Missing request attribute that was " +
+                "supposed to have been set by programmtically registered " +
+                "Filter");
+        }
+
+        if (!"listenerAttributeValue".equals(req.getAttribute(
+                "listenerAttributeName"))) {
+            throw new ServletException("Missing request attribute that was " +
+                "supposed to have been set by programmtically registered " +
+                "ServletRequestListener");
+        }
+
+        res.getWriter().println("HELLO WORLD! GLASSFISH\n");
+    }
+}
+```
+
+TestServletContextListener实现ServletContextListener接口的方法。一个是servlet环境的初始化，还有是对环境的销毁。
+```
+public class TestServletContextListener implements ServletContextListener {
+
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+
+        ServletContext sc = sce.getServletContext();
+
+        // Register Servlet
+        ServletRegistration sr = sc.addServlet("DynamicServlet",
+            "org.glassfish.servlet.dynamic_registration_war.TestServlet");
+        sr.setInitParameter("servletInitName", "servletInitValue");
+        sr.addMapping("/*");
+
+        // Register Filter
+        FilterRegistration fr = sc.addFilter("DynamicFilter",
+            "org.glassfish.servlet.dynamic_registration_war.TestFilter");
+        fr.setInitParameter("filterInitName", "filterInitValue");
+        fr.addMappingForServletNames(EnumSet.of(DispatcherType.REQUEST),
+                                     true, "DynamicServlet");
+
+        // Register ServletRequestListener
+        sc.addListener("org.glassfish.servlet.dynamic_registration_war.TestServletRequestListener");
+    }   
+
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {  
+        // Do nothing
+    }
+}
+```
+
+TestServletRequestListener实现ServletRequestListener接口，监听请求初始化的方法，将请求转换，另外还有销毁请求的函数。
+```
+public class TestServletRequestListener implements ServletRequestListener {
+
+    /**
+     * Receives notification that a request is about to enter the scope
+     * of the web application.
+     *
+     * @param sre The ServletRequestEvent
+     */
+    public void requestInitialized(ServletRequestEvent sre) {
+        sre.getServletRequest().setAttribute("listenerAttributeName",
+            "listenerAttributeValue");
+    }
+
+    /**
+     * Receives notification that a request is about to leave the scope
+     * of the web application.
+     *
+     * @param sre The ServletRequestEvent
+     */
+    public void requestDestroyed(ServletRequestEvent sre) {
+        // Do nothing
+    }
+
+}
+```
+
+## WebSocket
+
+echo实现源码,发送的消息返回信息
+```
+@ServerEndpoint("/echo")
+public class EchoEndpoint {
+
+    /**
+     * Incoming message is represented as parameter and return value is going to be send back to peer.
+     * </p>
+     * {@link javax.websocket.Session} can be put as a parameter and then you can gain better control of whole
+     * communication, like sending more than one message, process path parameters, {@link javax.websocket.Extension Extensions}
+     * and sub-protocols and much more.
+     *
+     * @param message incoming text message.
+     * @return outgoing message.
+     *
+     * @see OnMessage
+     * @see javax.websocket.Session
+     */
+    @OnMessage
+    public String echo(String message) {
+        return message;
+    }
+}
+```
+
+js中调用WebSocket中的方法实现对传送消息的返回
+```
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+</head>
+
+<body>
+<meta charset="utf-8">
+<title>Web Socket JavaScript Echo Client</title>
+<script language="javascript" type="text/javascript">
+    var wsUri = getRootUri() + "/websocket-echo/echo";
+
+    function getRootUri() {
+        return "ws://" + (document.location.hostname == "" ? "localhost" : document.location.hostname) + ":" +
+                (document.location.port == "" ? "8080" : document.location.port);
+    }
+
+    function init() {
+        output = document.getElementById("output");
+    }
+
+    function send_echo() {
+
+        websocket = new WebSocket(wsUri);
+        websocket.onopen = function (evt) {
+            onOpen(evt)
+        };
+        websocket.onmessage = function (evt) {
+            onMessage(evt)
+        };
+        websocket.onerror = function (evt) {
+            onError(evt)
+        };
+
+    }
+
+    function onOpen(evt) {
+        writeToScreen("CONNECTED");
+        doSend(textID.value);
+
+    }
+
+    function onMessage(evt) {
+        writeToScreen("RECEIVED: " + evt.data);
+    }
+
+    function onError(evt) {
+        writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+    }
+
+    function doSend(message) {
+        writeToScreen("SENT: " + message);
+        websocket.send(message);
+    }
+
+    function writeToScreen(message) {
+        var pre = document.createElement("p");
+        pre.style.wordWrap = "break-word";
+        pre.innerHTML = message;
+        //alert(output);
+        output.appendChild(pre);
+    }
+
+    window.addEventListener("load", init, false);
+
+</script>
+
+<h2 style="text-align: center;">WebSocket Echo Client</h2>
+
+<br></br>
+
+<div style="text-align: center;">
+    <form action="">
+        <input onclick="send_echo()" value="Press me" type="button">
+        <input id="textID" name="message" value="Hello WebSocket!" type="text"><br>
+    </form>
+</div>
+<div id="output"></div>
+</body>
+</html>
+```
+
+Auction实现对消息的竞拍，多个内容争抢资源并返回消息进行通信。
+## 结束语
+Java EE 针对云进行了重新定位，计划的版本包含两部分，前半部分包含促进实现该目标的技术。Java EE 8 一面世，Java EE 9 的研发工作就会开始。目前的目标是在一年内发布 Java EE 9。
+
+Java EE 9 开发路线图已包含对 Java EE Security API 的增强，这些增强将包含不适用于 Java EE Security 1.0 中的一些特性。开发人员也有望看到对云中企业开发的深化支持，看到更多 Java EE 技术将使用反应式宣言作为蓝图来提高灾备能力和可伸缩性。
+
+两个将支持微服务的 API 是 Configuration API 1.0 (JSR 382) 和 Health Check，二者都已添加到 Java EE 8 中，但正在考虑进行下一次更新。

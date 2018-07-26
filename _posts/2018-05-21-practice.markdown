@@ -1,0 +1,39 @@
+---
+layout:    post
+title:      "第四范式实习第十二天"
+subtitle:   "Day12 Practice"
+date:       2018-05-21 12:00:00
+author:     "scyhssm"
+header-img: "img/实习.jpeg"
+header-mask: 0.3
+catalog:    true
+tags:
+    - 实习
+---
+
+>这是我在范式第十二天，累
+
+## 工作内容
+1.对接PMS报警接口，和PMS报警模块负责人确定设计
+
+2.编写PMS报警接口，尝试推送消息
+
+### 报警Api遇到的问题及解决方案梳理
+如果要在Quartz定时任务中用到Bean注入的对象，有一种解决方式是先定义一个QuartzBean，这是用的Spring框架。在QuartzBean中还可以构造一个JobFactory的类，通过传入注入的Client构造。这样就可以通过Spring的依赖注入获得JobFactory。
+通过Scheduler触发任务，在SchedulerBean中调用注入的JobFactory，在SetJobFactory可以设置获得的JobFactory。使用JobFactory初始化ExecutionJobFactory里newJob的参数。通过设置的Setter方法设置PmsClient，最后设置TrainCallBack中的PmsClient为JobFactory传入的PmsClient，触发定时任务。
+
+### Git Stash
+Git stash并不是每个分支都分别有贮藏，而是可以在当前分支贮藏后切换到其他分支再pop的。
+
+1.问题要明确，然后再着手解决问题
+
+2.多分析代码，脑子活络点，写代码胆子大点
+
+3.写代码多动脑子
+
+## 明天的工作
+1.配合周凯调通PMS报警
+
+2.思考如何解决正样本率的显示
+
+3.思考如何设计模型AUC

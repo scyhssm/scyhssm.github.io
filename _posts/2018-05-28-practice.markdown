@@ -1,0 +1,31 @@
+---
+layout:    post
+title:      "第四范式实习第十七天"
+subtitle:   "Day17 Practice"
+date:       2018-05-28 12:00:00
+author:     "scyhssm"
+header-img: "img/实习.jpeg"
+header-mask: 0.3
+catalog:    true
+tags:
+    - 实习
+---
+
+>这是我在范式第十七天，累
+
+## 工作内容
+1.完成学习圈首页创建功能
+
+2.跟进正样本率开发，商议实现正样本率使用2.6版本项目先跑DAG
+
+3.计算机网络加操作系统，看得太慢，效率不高
+
+## 问题
+Spring还不够熟练使用
+
+## 明日工作
+1.开发正样本率功能
+
+2.开发行为数据和反馈数据上传功能
+
+3.学习找到的比较好的Spring Boot教程

@@ -1,0 +1,31 @@
+---
+layout:    post
+title:      "第四范式实习第十天"
+subtitle:   "Day10 Practice"
+date:       2018-05-17 12:00:00
+author:     "scyhssm"
+header-img: "img/实习.jpeg"
+header-mask: 0.3
+catalog:    true
+tags:
+    - 实习
+---
+
+>这是我在范式第十天，累
+
+## 工作内容
+1.参与PMS监控和报警设计需求评审
+
+2.编写大盘Controller和业务指标Controller
+
+3.参与学习圈二次需求评审
+
+4.操作系统和计算机网络学习
+
+## 遇到问题
+找方法比较困难
+
+## 明天工作
+1.继续写大盘Controller和业务指标Controller
+
+2.学习计算机网络和操作系统

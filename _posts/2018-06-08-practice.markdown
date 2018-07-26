@@ -1,0 +1,25 @@
+---
+layout:    post
+title:      "第四范式实习第二十四天"
+subtitle:   "Day24 Practice"
+date:       2018-06-08 12:00:00
+author:     "scyhssm"
+header-img: "img/实习.jpeg"
+header-mask: 0.3
+catalog:    true
+tags:
+    - 实习
+---
+
+>这是我在范式第二十三天，累
+
+## 今日任务
+1.反馈代码中遗留的问题
+
+2.修改增加代码功能，去掉写死的数据
+
+
+## 明日任务
+1.完成遗留工作
+
+2.和郝越调试接口

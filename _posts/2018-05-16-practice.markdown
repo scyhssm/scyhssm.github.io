@@ -1,0 +1,31 @@
+---
+layout:    post
+title:      "第四范式实习第九天"
+subtitle:   "Day9 Practice"
+date:       2018-05-16 12:00:00
+author:     "scyhssm"
+header-img: "img/实习.jpeg"
+header-mask: 0.3
+catalog:    true
+tags:
+    - 实习
+---
+
+>这是我在范式第九天，累
+
+## 工作内容
+1.PMS那里报警接口还没有写完，这里先将该处理的处理好，等待API的完成测试。
+
+2.clone并运行automl。
+
+3.对接automl前台参数，查找完成功能需要的接口。
+
+4.计算机网络加操作系统兄弟组合学习
+
+## 遇到问题
+automl运行时没有配置Maven的setting.xml文件，无法下载公司的jar包
+
+## 明日计划
+1.完成学习圈行为数据模块的功能。
+
+2.完成获得模型模块的功能。
