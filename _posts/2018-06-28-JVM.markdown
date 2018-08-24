@@ -38,7 +38,7 @@ int a; //变量
 const int b = 10; //b为常量，10为字面量
 string str = “hello world！”; // str 为变量，hello world！为字面量
 
-关于符号引用和直接引用，符号引用实际上是：带有类型(tag)/结构(符号间引用层次)的字符串。符号引用通常是设计成字符串的——用文本形式表示引用关系，要调用方法会发现指令未被解析，先解析，通过操作数找到常量池项发现常量池项未被解析，进一步解析，通过类名->结构体->方法名->方法描述符到结构体上记录到方法里找到匹配的methodblock，把methodblock指针写回常量池，methodblock是一个直接引用。直接引用是JVM能够直接使用的形式，既可以表示为指针也可以表示为其他形式，通过偏移量找到方法字节码起始位置。
+关于符号引用和直接引用，符号引用实际上是：带有类型(tag)/结构(符号间引用层次)的字符串。符号引用通常是设计成字符串的——用文本形式表示引用关系，要调用方法会发现指令未被解析，先解析，通过操作数找到常量池项发现常量池项未被解析，进一步解析，通过类名-\>结构体-\>方法名-\>方法描述符到结构体上记录到方法里找到匹配的methodblock，把methodblock指针写回常量池，methodblock是一个直接引用。直接引用是JVM能够直接使用的形式，既可以表示为指针也可以表示为其他形式，通过偏移量找到方法字节码起始位置。
 
 8.JDK1.4中新加入了NIO类，可以使用Native函数库直接分配堆外内存，通过一个存储在Java堆里的DirectByteBuffer对象作为这块内存的引用进行操作。能够显著提高性能，避免了Java堆和Native堆中来回复制数据。
 
@@ -50,9 +50,9 @@ string str = “hello world！”; // str 为变量，hello world！为字面量
 
 通过Java虚拟机禁止的引用计数法判断对象引用数量收集对象还是可达性分析算法判断都和引用有关。Java有4种强度的引用类型：
 * 强引用，被强引用关联的对象不会被垃圾收集器回收，Object obj = new Object();
-* 软引用，被软引用关联的对象，会在内存不够的情况下被回收，创建obj的软引用，SoftReference<Object> sf = new SoftReference<Object>(obj);
-* 弱引用，被弱引用关联的对象一定会被回收，回收时间是下一次垃圾收集。创建obj的弱引用，WeakReference<Object> wf = new WeakReference<Object>(obj);WeakHashMap的Entry继承自WeakReference，主要实现缓存，private static class Entry<K,V> extends WeakReference<Object> implements Map.Entry<K,V>;Tomcat中的ConcurrentCache使用WeakHashMap实现缓存，经常使用的对象放到ConcurrentHashMap实现的eden，而不常使用的对象放到WeakHashMap实现的longterm中。
-* 虚引用，对象的虚引用无法对对象产生任何影响，无法通过虚引用取得对象实例，其作用只是为了在对象被回收时收到一个系统通知，创建方法：PhantomReference<Object> pf = new PhantomReference<Object>(obj);
+* 软引用，被软引用关联的对象，会在内存不够的情况下被回收，创建obj的软引用，SoftReference\<Object\> sf = new SoftReference\<Object\>(obj);
+* 弱引用，被弱引用关联的对象一定会被回收，回收时间是下一次垃圾收集。创建obj的弱引用，WeakReference\<Object\> wf = new WeakReference\<Object\>(obj);WeakHashMap的Entry继承自WeakReference，主要实现缓存，private static class Entry\<K,V\> extends WeakReference\<Object\> implements Map.Entry\<K,V\>;Tomcat中的ConcurrentCache使用WeakHashMap实现缓存，经常使用的对象放到ConcurrentHashMap实现的eden，而不常使用的对象放到WeakHashMap实现的longterm中。
+* 虚引用，对象的虚引用无法对对象产生任何影响，无法通过虚引用取得对象实例，其作用只是为了在对象被回收时收到一个系统通知，创建方法：PhantomReference\<Object\> pf = new PhantomReference\<Object\>(obj);
 
 11.方法区只是JVM规范定义的一个概念，没有严格定义的位置，逻辑上独立，不同虚拟机的实现可以放在不同的地方，用于存储类信息、常量池、静态变量、JIT编译后的代码。永久代Perm Gen是HotSpot虚拟机特有的概念，是方法区的一种实现，别的JVM没有。Java6中方法区包含的数据，除了JIT编译生成的代码放在native memory的CodeCache区域，其他都放在永久代。Java7中，Symbol存储从PermGen移动到了native memory，并且把静态变量从instanceKlass末尾（位于PermGen内）移动到了java.lang.Class对象的末尾（位于普通Java heap内）。Java8中，永久代被彻底移除，取而代之的是另一块与堆不相连的本地内存——元空间（Metaspace）,‑XX:MaxPermSize 参数失去了意义，取而代之的是-XX:MaxMetaspaceSize。
 
@@ -223,11 +223,11 @@ G1|并发|both|标记-整理+复制算法|响应速度优先|面向服务端应�
 
 初始化：
 
-初始化阶段才真正开始执行类中的定义的 Java 程序代码。初始化阶段即虚拟机执行类构造器 <clinit>() 方法的过程。
+初始化阶段才真正开始执行类中的定义的 Java 程序代码。初始化阶段即虚拟机执行类构造器 \\<clinit\>() 方法的过程。
 
 在准备阶段，类变量已经赋过一次系统要求的初始值，而在初始化阶段，根据程序员通过程序制定的主观计划去初始化类变量和其它资源。
 
-<clinit>方法具有以下特点：
+\\<clinit\>()方法具有以下特点：
 
 * 是由编译器自动收集类中所有类变量的赋值动作和静态语句块（static{} 块）中的语句合并产生的，编译器收集的顺序由语句在源文件中出现的顺序决定。特别注意的是，静态语句块只能访问到定义在它之前的类变量，定义在它之后的类变量只能赋值，不能访问（还是可以赋值）：
 ```
@@ -239,8 +239,8 @@ public class Test {
     static int i = 1;
 }
 ```
-* 与类的构造函数（或者说实例构造器 <init>()）不同，不需要显式的调用父类的构造器。虚拟机会自动保证在子类的 <clinit>() 方法运行之前，父类的 <clinit>() 方法已经执行结束。因此虚拟机中第一个执行 <clinit>() 方法的类肯定为 java.lang.Object。
-* 由于父类的 <clinit>() 方法先执行，也就意味着父类中定义的静态语句块要优于子类的变量赋值操作：
+* 与类的构造函数（或者说实例构造器 \\<init\>()）不同，不需要显式的调用父类的构造器。虚拟机会自动保证在子类的 \\<clinit\>() 方法运行之前，父类的 \\<clinit\>() 方法已经执行结束。因此虚拟机中第一个执行 \\<clinit\>() 方法的类肯定为 java.lang.Object。
+* 由于父类的 \<clinit\>() 方法先执行，也就意味着父类中定义的静态语句块要优于子类的变量赋值操作：
 ```
 static class Parent {
     public static int A = 1;
@@ -257,9 +257,9 @@ public static void main(String[] args) {
      System.out.println(Sub.B);  // 输出结果是父类中的静态变量 A 的值，也就是 2。
 }
 ```
-* <clinit>() 方法对于类或接口不是必须的，如果一个类中不包含静态语句块，也没有对类变量的赋值操作，编译器可以不为该类生成 <clinit>() 方法。
-* 接口中不可以使用静态语句块，但仍然有类变量初始化的赋值操作，因此接口与类一样都会生成 <clinit>() 方法。但接口与类不同的是，执行接口的 <clinit>() 方法不需要先执行父接口的 <clinit>() 方法。只有当父接口中定义的变量使用时，父接口才会初始化。另外，接口的实现类在初始化时也一样不会执行接口的 <clinit>() 方法。
-* 虚拟机会保证一个类的 <clinit>() 方法在多线程环境下被正确的加锁和同步，如果多个线程同时初始化一个类，只会有一个线程执行这个类的 <clinit>() 方法，其它线程都会阻塞等待，直到活动线程执行 <clinit>() 方法完毕。如果在一个类的 <clinit>() 方法中有耗时的操作，就可能造成多个线程阻塞，在实际过程中此种阻塞很隐蔽。
+* \<clinit\>() 方法对于类或接口不是必须的，如果一个类中不包含静态语句块，也没有对类变量的赋值操作，编译器可以不为该类生成 \<clinit\>() 方法。
+* 接口中不可以使用静态语句块，但仍然有类变量初始化的赋值操作，因此接口与类一样都会生成 \<clinit\>() 方法。但接口与类不同的是，执行接口的 \<clinit\>() 方法不需要先执行父接口的 \<clinit\>() 方法。只有当父接口中定义的变量使用时，父接口才会初始化。另外，接口的实现类在初始化时也一样不会执行接口的 \<clinit\>() 方法。
+* 虚拟机会保证一个类的 \<clinit\>() 方法在多线程环境下被正确的加锁和同步，如果多个线程同时初始化一个类，只会有一个线程执行这个类的 \<clinit\>() 方法，其它线程都会阻塞等待，直到活动线程执行 \<clinit\>() 方法完毕。如果在一个类的 \<clinit\>() 方法中有耗时的操作，就可能造成多个线程阻塞，在实际过程中此种阻塞很隐蔽。
 
 33.类加载器
 
@@ -276,8 +276,8 @@ public static void main(String[] args) {
 * 所有其他类的加载器，这些类由 Java 实现，独立于虚拟机外部，并且全都继承自抽象类 java.lang.ClassLoader。
 
 从 Java 开发人员的角度看，类加载器可以划分得更细致一些：
-* 启动类加载器（Bootstrap ClassLoader）此类加载器负责将存放在 <JAVA_HOME>\lib 目录中的，或者被 -Xbootclasspath 参数所指定的路径中的，并且是虚拟机识别的（仅按照文件名识别，如 rt.jar，名字不符合的类库即使放在 lib 目录中也不会被加载）类库加载到虚拟机内存中。启动类加载器无法被 Java 程序直接引用，用户在编写自定义类加载器时，如果需要把加载请求委派给启动类加载器，直接使用 null 代替即可。
-* 扩展类加载器（Extension ClassLoader）这个类加载器是由 ExtClassLoader（sun.misc.Launcher$ExtClassLoader）实现的。它负责将 <JAVA_HOME>/lib/ext 或者被 java.ext.dir 系统变量所指定路径中的所有类库加载到内存中，开发者可以直接使用扩展类加载器。
+* 启动类加载器（Bootstrap ClassLoader）此类加载器负责将存放在 \<JAVA_HOME\>\lib 目录中的，或者被 -Xbootclasspath 参数所指定的路径中的，并且是虚拟机识别的（仅按照文件名识别，如 rt.jar，名字不符合的类库即使放在 lib 目录中也不会被加载）类库加载到虚拟机内存中。启动类加载器无法被 Java 程序直接引用，用户在编写自定义类加载器时，如果需要把加载请求委派给启动类加载器，直接使用 null 代替即可。
+* 扩展类加载器（Extension ClassLoader）这个类加载器是由 ExtClassLoader（sun.misc.Launcher$ExtClassLoader）实现的。它负责将 \<JAVA_HOME\>/lib/ext 或者被 java.ext.dir 系统变量所指定路径中的所有类库加载到内存中，开发者可以直接使用扩展类加载器。
 * 应用程序类加载器（Application ClassLoader）这个类加载器是由 AppClassLoader（sun.misc.Launcher$AppClassLoader）实现的。由于这个类加载器是 ClassLoader 中的 getSystemClassLoader() 方法的返回值，因此一般称为系统类加载器。它负责加载用户类路径（ClassPath）上所指定的类库，开发者可以直接使用这个类加载器，如果应用程序中没有自定义过自己的类加载器，一般情况下这个就是程序中默认的类加载器。
 
 (3)双亲委派模型
@@ -304,14 +304,14 @@ public abstract class ClassLoader {
     // The parent class loader for delegation
     private final ClassLoader parent;
 
-    public Class<?> loadClass(String name) throws ClassNotFoundException {
+    public Class\<?\> loadClass(String name) throws ClassNotFoundException {
         return loadClass(name, false);
     }
 
-    protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+    protected Class\<?\> loadClass(String name, boolean resolve) throws ClassNotFoundException {
         synchronized (getClassLoadingLock(name)) {
             // First, check if the class has already been loaded
-            Class<?> c = findLoadedClass(name);
+            Class\<?\> c = findLoadedClass(name);
             if (c == null) {
                 try {
                     if (parent != null) {
@@ -337,7 +337,7 @@ public abstract class ClassLoader {
         }
     }
 
-    protected Class<?> findClass(String name) throws ClassNotFoundException {
+    protected Class\<?\> findClass(String name) throws ClassNotFoundException {
         throw new ClassNotFoundException(name);
     }
 }
