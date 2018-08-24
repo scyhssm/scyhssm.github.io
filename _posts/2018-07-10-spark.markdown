@@ -1,0 +1,20 @@
+---
+layout:    post
+title:      "Spark笔记"
+subtitle:   "Spark Note"
+date:       2018-07-10 12:00:00
+author:     "scyhssm"
+header-img: "img/404-bg.jpg"
+header-mask: 0.3
+catalog:    true
+tags:
+    - Spark
+---
+
+> Spark笔记待完善
+
+同Hadoop一起9月底整理，内容记录在书本上，上传需要一定工作量。
+
+主要是基于Spark的调度，架构，RDD，Spark Streaming整理的知识点内容。
+
+Spark SQL部分涉及，MLlib和图计算先不上传，待全面了解再上传。

@@ -1,0 +1,25 @@
+---
+layout:    post
+title:      "Hadoop笔记"
+subtitle:   "Hadoop Note"
+date:       2018-06-14 12:00:00
+author:     "scyhssm"
+header-img: "img/404-bg.jpg"
+header-mask: 0.3
+catalog:    true
+tags:
+    - Hadoop
+    - HDFS
+    - HBase
+    - MapReduce
+---
+
+> 待完善，忙完面试把笔记记录下来
+
+在大数据研发的学习中，网上没有找到优质的复习资源，这里整理了本人从网上摘下的知识点，并整理成块以供快速学习。
+
+知识点比较基础，主要是对Hadoop核心架构的梳理。
+
+大数据研发是实践要求很强的岗位，建议能够多在实际生产环境中操练，其本质上还是一套Java写成的框架。
+
+本人会将HDFS、HBase、MapReduce及加入Yarn后的Hadoop框架笔记上传，预计-9月底。
