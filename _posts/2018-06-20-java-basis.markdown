@@ -16,19 +16,27 @@ tags:
 1. 基本类型boolean/1,byte/8,char/16,short/16,int/32,float/32,long/64,double/64.基本类型都有对应的包装类型，基本类型和对应包装类型之间的赋值用自动装箱与拆箱完成。
 
 2. new Integer(123)每次都新建对象，Integer.valueOf(123)可能使用缓存对象，多次使用Integer.valueOf(123)会取得同一个对象的引用。
+
 valueOf(int i)源码实现：
+```
 public static Integer valueOf(int i) {
     if (i >= IntegerCache.low && i <= IntegerCache.high)
         return IntegerCache.cache[i + (-IntegerCache.low)];
     return new Integer(i);
 }
+```
+
 Java8中Integer缓存池默认大小为-128～127
+
 其他放在缓存池中的类型：
+```
 boolean true and false
 all bytes values
 short values between -128 and 127
 int values between -128 and 127
 char in the range \u0000 to \u007f
+```
+
 使用这些基本类型对应的包装类型可以直接使用缓冲池对象，因此Integer.valueOf(123)在范围内可以直接使用。
 3.String被声明为final，不可继承。内部使用char数组存储数据，数组也被声明为final，value数组初始化后不能再引用其他数组，如果是通过某个数组创建的String，会有构造函数来拷贝数组构造：
 public String(char value[]) {
