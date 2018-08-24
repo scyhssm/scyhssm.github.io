@@ -58,6 +58,8 @@ tags:
 
 9.HashMap，内部包含了一个 Entry 类型的数组 table。Entry 就是存储数据的键值对，它包含了四个字段。从 next 字段我们可以看出 Entry 是一个链表，即数组中的每个位置被当成一个桶，一个桶存放一个链表，链表中存放哈希值相同的 Entry。也就是说，HashMap 使用拉链法来解决冲突。当桶的容量过大时会更改结构为红黑树。
 ￼
+![Entry](/img/entry-struct.png)
+
 为了让查找的成本降低，应该尽可能使得 N/M 尽可能小，因此需要保证 M 尽可能大，也就是说 table 要尽可能大，即桶的数量要增加。
 
 HashMap 采用动态扩容来根据当前的 N 值来调整 M 值，使得空间效率和时间效率都能得到保证。
@@ -111,6 +113,8 @@ final Segment<K,V>[] segments;
 
 static final int DEFAULT_CONCURRENCY_LEVEL = 16;
 ￼
+![ConcurrentHashMap](/img/concurrent-hash-map.png)
+
 每个 Segment 维护了一个 count 变量来统计该 Segment 中的键值对个数。transient int count;
 
 在执行 size 操作时，需要遍历所有 Segment 然后把 count 累计起来。
