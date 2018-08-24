@@ -259,7 +259,7 @@ public static final int OP_ACCEPT = 1 << 4;
 
 可以看出每个事件可以被当成一个位域，从而组成事件集整数。
 
-int interestSet = SelectionKey.OP_READ | SelectionKey.OP_WRITE;
+int interestSet = SelectionKey.OP_READ|SelectionKey.OP_WRITE;
 
 (3) 监听事件
 
