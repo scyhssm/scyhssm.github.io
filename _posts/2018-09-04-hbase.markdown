@@ -1,0 +1,33 @@
+---
+layout:    post
+title:      "HBase笔记"
+subtitle:   "HBase NoteBook"
+date:       2018-09-04 12:00:00
+author:     "scyhssm"
+header-img: "img/hbase.png"
+header-mask: 0.3
+catalog:    true
+tags:
+    - HBase
+    - Hadoop
+---
+
+> HBase的笔记
+
+## HRegin的分裂
+1. 一个Table只有一个HRegion，当数据写入增加，一个HRegion到达阈值会split成两个HRegion
+2. split时，两个HRegion在同一个HRegionServer中创建，各自包含一般的父HRegion数据
+3. 只有当split完成，父HRegion才会退出，子HRegion上线
+4. 子HRegion可能出于负载均衡的考虑被分配到其他的HRegionServer中
+
+## StoreFile的合并
+1. Minor Compaction选取小的、相邻的StoreFile并将他们合并，不会处理已经Deleted和Expired的Cell
+2. Major Compaction会引起很多的IO操作导致出现性能问题，安排在服务器压力比较小的时候。Major Compaction会将所有的StoreFile合并成一个StoreFile，标记为Deleted、Expired和超过最多半本数的Cell会被丢弃。
+3. Major Compaction会将其他机器上的HRegion一同合并，会把HRegion移动到一台HRegionServer，注意这点，不只是在同一台节点的
+
+## HBase读
+1. 相同的Cell可能存在的位置，新写入的Cell会存在于MemStore，对之前flush的Cell可能存在于StoreFile中，刚刚读取过的可能在BlockCache中
+2. 读取时依次扫描BlockCache、MemStore、StoreFile。StoreFile可能比较多，用Bloom Filter过滤不符合条件的HFile，用Block Index快速定位Cell，从BlockCache中读取
+
+## HFile文件结构
+经历几次版本的变换，总体来说是向命中速度更快，消耗存储更小的方向上走的

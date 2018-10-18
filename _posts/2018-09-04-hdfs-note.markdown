@@ -1,0 +1,47 @@
+---
+layout:    post
+title:      "HDFS笔记"
+subtitle:   "HDFS NoteBook"
+date:       2018-09-04 12:00:00
+author:     "scyhssm"
+header-img: "img/hdfs.jpg"
+header-mask: 0.3
+catalog:    true
+tags:
+    - HDFS
+    - Hadoop
+---
+
+> HDFS的笔记
+
+## HDFS写文件
+1. Client调用DistributedFileSystem对象的create方法，创建一个文件输出流（FSDataOutputStream）对象。
+2. 通过DistributedFileSystem对象与Hadoop集群NameNode进行一次RPC调用，在HDFS的Namespace上创建一个文件条目，block为空。
+3. 通过FSDataOutputStream对象，向DataNode写入数据，数据首先被写入FSDataOutputStream对象内部的Buffer中，然后数据被分成一个个Packet数据包。
+4. 以Packet为最小单位，基于Socket连接发送到按特定算法选择的HDFS集群中一组DataNode中的一个节点上，在这组DataNode组成的Pipeline上依次传输Packet。
+5. 在这组DataNode组成的Pipeline反方向上发送ack，最终由第一个DataNode节点将Pipeline ack发送给Client。
+6. 完成向文件写入数据，Client在文件输出流（FSDataOutputStream）上调用close方法，关闭流。
+7. 调用DistributedFileSystem对象的complete方法，通知NameNode写入成功。
+8. Block发送选择节点算法，在集群外提交随机选择一个节点放第一个副本，第二个副本选择机架外的节点，第三个副本选和第一个副本同一个机架；集群内提交则第一个副本选择提交节点。
+
+[HDFS写文件源码详解](http://shiyanjun.cn/archives/942.html)
+
+## HDFS读数据
+### 读取文件的Block列表
+1. 创建一个DistributedFileSystem对象，open一个文件输入流（FSDataInputStream）对象。
+2. Client通过getBlockLocations方法获得文件Block位置信息，以及其他一些文件信息如文件长度。
+[HDFS读文件获取Block列表源码详解](http://shiyanjun.cn/archives/925.html)
+
+### 读取文件的Block数据
+1. 从第一个block开始读取，找到第一个block对应的DataNode。
+2. 打开一个到该读取block所在的DataNode节点的流，准备读取block数据。
+3. 读取字节数据到缓冲区，返回读取的字节数。
+4. 通过偏移的字节判断属于哪个block，根据block定位DataNode节点。
+[HDFS读文件获取Block数据源码详解](http://shiyanjun.cn/archives/962.html)
+
+## HDFS2.0
+1. 多备用节点，实现热备份，standby可以马上接替工作无损失，可以通过Zookeeper实现。
+2. HDFS Federation，多命名空间多NameNode同时掌管一部分目录对外提供服务。
+
+## 删除文件
+实际删除文件并不会删除，而是移动到回收站，文件保存一段时间。如果还要使用，可以恢复删除文件，标记被删除文件，直接覆盖。
